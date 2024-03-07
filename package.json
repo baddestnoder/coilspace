@@ -1,0 +1,26 @@
+{
+  "name": "megagold",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js",
+    "start": "nodemon app.js"
+  },
+  "author": "Christian Emmanuel",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.2",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-queue": "^0.0.13",
+    "express-validator": "^7.0.1",
+    "helmet": "^5.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.2.1",
+    "validator": "^13.11.0"
+  }
+}

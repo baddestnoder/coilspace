@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%-include("./partialTemplate/meta.ejs")%>
+	<title>CoilSpace | Refer and Earn</title>
+
+
+	<style>
+
+		@media screen and (min-width: 200px){
+
+
+			footer .refer a{
+				color: blue;
+			}
+
+			footer .refer i{
+				color: blue;
+			}
+
+
+
+
+
+
+			div.menu_to_login{
+				background-color: rgb(230, 250, 255);
+			}
+
+			
+
+			.wallet_wrapper{
+				display: none;
+			}
+
+			main{
+				padding: 30px 0 0 0;
+				border-top: 1px solid rgb(200, 200, 200);
+			}
+			
+
+
+
+			.card_wrapper{
+				position: relative;
+				box-sizing: border-box;
+				width: 90%;
+				margin: 0px auto 0 auto;
+				padding: 25px;
+				border-radius: 15px 15px 50% 15px;
+				color: rgb(220, 220, 220);
+				background-color: rgb(0, 120, 80);
+			}
+
+
+
+			.card_design{
+				position: absolute;
+				right: 0;
+				top: 0;
+				height: 200px;
+				width: 200px;
+				z-index: 0;
+				border-radius: 50% 15px 15px 50%;
+				background-color: rgb(50, 140, 100);
+			}
+
+
+			.card_design div{
+				color: rgb(220, 220, 220);
+				text-align: right;
+				margin: 20px 20px 0 0;
+			}
+
+			.card_design div i{
+				color: rgb(255, 255, 110);;
+			}
+
+
+			.card_design div span{
+				display: inline-block;
+				color: white;
+				margin: 3px 0 0 0;
+				font-weight: 600;
+			}
+
+
+			.card_wrapper p{
+				position: relative;
+				z-index: 1;
+			}
+
+			.card_wrapper form{
+				position: relative;
+				z-index: 1;
+			}
+
+
+			
+
+			.card_wrapper p span{
+				color: white;
+				font-weight: 600;
+				font-size: 1.8rem;
+				margin: 5px 0;
+				display: block;
+			}
+
+			.card_wrapper p > button{
+				color: black;
+				border: none;
+				font-size: 0.9rem;
+				padding: 4px 10px;
+				border-radius: 7px;
+				background-color: rgb(255, 255, 110);
+			}
+
+
+
+			form{
+				margin-top: 20px;
+				width: 90%;
+				border: 1px solid white;
+				border-radius: 15px;
+				display: grid;
+				grid-template-columns: 5fr 2fr;
+				padding: 3px;
+				background-color: rgb(190, 190, 190);
+			}
+
+			form input{
+				border-radius: 10px 0 0 10px;
+				border: none;
+				display: block;
+				padding: 6px 5px 6px 10px;
+			}
+
+
+			form button{
+				border-radius: 0 10px 10px 0;
+				border: none;
+				background-color: rgb(0, 120, 80);
+				color: white;
+			}
+
+
+
+			h1{
+				margin-top: 20px;
+				font-family: 'Varela Round', sans-serif;
+				padding: 40px 5px 0 20px;
+				font-weight: 400;
+				color: rgb(40, 40, 40);
+				font-size: 1.15rem;
+				text-align: center;
+			}
+
+			h1 span{
+				font-family: 'Montserrat', sans-serif;
+				display: block;
+				font-size: 1.8rem;
+			}
+
+
+			.or{
+				padding: 20px 0 10px 0;
+				text-align: center;
+				font-size: 1.3rem;
+				font-weight: 600;
+			}
+
+
+			.share_whatsapp{
+				display: block;
+				background-color: rgb(0, 120, 80);
+				color: white;
+				border: none;
+				border-radius: 7px;
+				padding: 15px 0;
+				width: 50%;
+				margin: 10px auto 0 auto;
+			}
+
+
+
+			
+
+			.history_wrapper{
+
+				margin-top: 30px;
+				border-top: 12px solid rgb(200, 200, 200);
+				padding: 40px 20px 120px 20px;
+			}
+
+
+			.history_wrapper article{
+				line-height: 1.6;
+				padding: 20px 0;
+				border-bottom: 1px solid rgb(210, 210, 210);
+				display: grid;
+				grid-template-columns: 65px 1fr;
+			}
+
+
+			.history_wrapper h2{
+				color: rgb(50, 50, 50);
+				font-weight: 400;
+				margin-bottom: 30px;
+			}
+
+			.history_wrapper i{
+				margin-top: 10px;
+				font-size: 2rem;
+				display: block;
+			}
+
+
+			.history_wrapper i::before{
+				padding: 12px 10px;
+				border-radius: 50%;
+				background-color: rgb(10, 15, 50);
+				color: rgb(200, 230, 255);
+			}
+
+			.history_wrapper .fa-coins::before{
+				background-color: rgb(0, 100, 50);
+				padding: 13px 14px;
+				color: rgb(200, 255, 220);
+			}
+
+			.history_wrapper .fa-wallet::before{
+				padding: 11px 11px;
+				background-color: rgb(120, 0, 0);
+				color: rgb(255, 200, 220);
+			}
+
+
+			.history_wrapper .joined_date{
+				margin-top: 5px;
+				color: rgb(150, 150, 150);
+			}
+
+		}
+
+
+
+		
+	</style>
+</head>
+
+
+
+
+
+
+
+
+
+<body>
+
+	<div class="body_overlay"></div>
+
+	<%
+		const currencyFormatter = new Intl.NumberFormat(data.currency_format, {
+		    style: 'currency',
+		    currency: data.currency
+		});
+	%>
+
+
+
+
+	<%-include("./partialTemplate/header.ejs")%>
+
+	<main>
+
+
+
+		
+		<div class="card_wrapper">
+			<div class="card_design">
+				<div>
+					Your Referrals
+					<br>
+
+					<%if(data.number_of_referral === 1){%>
+						<span><i class="fa-solid fa-users"></i> <%=data.number_of_referral%> Person</span>
+					<%}else{%>
+						<span><i class="fa-solid fa-users"></i> <%=data.number_of_referral%> People</span>
+					<%}%>
+					
+				</div>
+			</div>
+			<p>
+				Your Commission
+				<span><%=currencyFormatter.format(data.referral_commission)%></span>
+				<button class="withdraw_referral">Withdraw</button>
+			</p>
+
+
+			<form>
+				<input type="text" name="referral_link" value="https//:coilspace.com/reg/<%=data.index%>">
+				<button>Copy</button>
+			</form>
+		</div>
+
+
+		<h1>Copy your referral link &<span>Invite Your Friends</span>You'll earn 3% from all their investments.</h1>
+
+
+		
+		
+
+		
+
+		<p class="or">Or</p>
+
+		<button class="share_whatsapp"><a style="display: block; color: white" href="https://api.whatsapp.com/send?text=There is a fantastic platform called CoilSpace, making money here is very easy! I've been using this  platform and everything is 100% legit, it's very simple to trade and withdrawal is super easy. 
+			
+		Click on the link below if you are Interested 
+
+		https://coilspace.com/reg/<%=data.index%>"
+		data-action="share/whatsapp/share">Share on WhatsApp</a> </button>
+
+
+
+
+		<%if(history.length > 0){%>
+
+			<section class="history_wrapper">
+				<h2>History</h2>
+
+				<%for(i=history.length - 1; i>= 0; i--){%>
+
+					<%if(history[i].type === "Referral"){%>
+						<article>
+							<i class="fa-solid fa-users"> </i>
+							<div>
+								<h3><%=history[i].name%></h3>
+								<p>Joined CoilSpace using your referral link</p>
+								<p class="joined_date"><%=history[i].date%></p>
+							</div>
+						</article>
+					<%}else if(history[i].type === "Commission Withdrawal"){%>
+						<article>
+							<i class="fa-solid fa-wallet"></i>
+							<div>
+								<h3>Commission Withdrawal</h3>
+								<p><b><%=currencyFormatter.format(history[i].amount)%></b> has been deposited to your wallet</p>
+								<p class="joined_date"><%=history[i].date%></p>
+							</div>
+						</article>
+					<%}else{%>
+						
+						<article>
+							<i class="fa-solid fa-coins"></i>
+							<div>
+								<h3>Referral Commission</h3>
+								<p>One of your referrals made an investment and <b><%=currencyFormatter.format(history[i].amount)%></b> is your commission</p>
+								<p class="joined_date"><%=history[i].date%></p>
+							</div>
+						</article>
+
+					<%}%>
+				<%}%>
+				
+			</section>
+
+		<%}%>
+
+
+
+		<section style="display: none;" class="alert_wrapper">
+			<i class="alert_icon fa-solid fa-circle-exclamation"></i>
+			<p class="alert_p"></p>
+			<button class="alert_cancel">Okay</button>
+		</section>
+
+
+		
+	</main>
+
+
+	<%-include("./partialTemplate/footer.ejs")%>
+
+
+
+
+	<script type="text/javascript">
+		
+		const withdraw_button = document.querySelector(".withdraw_referral");
+		const alert_wrapper = document.querySelector(".alert_wrapper");
+		const alert_p = document.querySelector(".alert_p");
+		const header = document.querySelector("header");
+		const alert_cancel = document.querySelector(".alert_cancel");
+		const alert_icon = document.querySelector(".alert_icon");
+
+
+
+
+
+		function formatDate(date) {
+			const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+			// Get month, day, hours, and minutes
+			const month = months[date.getMonth()];
+			const day = date.getDate();
+			const hours = date.getHours();
+			const minutes = date.getMinutes();
+			  
+			// Convert hours to 12-hour format and determine AM/PM
+			const ampm = hours >= 12 ? 'PM' : 'AM';
+			const formattedHours = hours % 12 || 12; // Handle 0 hours
+			  
+			// Format the date
+			const formattedDate = month + ' ' + day + ' at ' + formattedHours + ':' + (minutes < 10 ? '0' : '') + minutes + ' ' + ampm;
+
+			return formattedDate
+		} 
+		const currentDate = new Date();
+
+
+
+
+		const display_alert = ()=>{
+			body_overlay.style.display = "block";
+			body_overlay.style.opacity = "0.8";
+			alert_wrapper.style.display = "block";
+
+			const scrollY = window.scrollY || window.pageYOffset;
+		  	const topPosition = 100+scrollY + 'px';
+		    alert_wrapper.style.top = topPosition;
+		}
+
+
+		const closs_alert = ()=>{
+			body_overlay.style.opacity = "0";
+			body_overlay.style.display = "none";
+			alert_wrapper.style.display = "none";
+		}
+
+
+
+
+		const currencyFormatter = new Intl.NumberFormat(header.dataset.format, {
+		    style: 'currency',
+		    currency: header.dataset.currency,
+            maximumFractionDigits: 0
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+		withdraw_button.addEventListener("click", async()=>{
+			withdraw_button.disabled = true;
+			withdraw_button.textContent = "Loading..."
+			alert_icon.className = "alert_icon alert_icon fa-solid fa-circle-exclamation";
+
+			try{
+
+				const result = await fetch("/withdraw_referral", {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+
+					body: JSON.stringify({
+						date: formatDate(currentDate),
+					})
+				});
+
+				const res = await result.json();
+
+				if(res.message){
+					display_alert();
+					alert_p.textContent = res.message;
+				}else{
+					alert_icon.className = "alert_icon fa-regular fa-circle-check";
+					display_alert();
+					alert_p.textContent = `${currencyFormatter.format(res.deducted)} has been deposited to your wallet.`;
+				}
+
+				withdraw_button.disabled = false;
+				withdraw_button.textContent = "Withdraw"
+			}catch(error){
+				console.log(error)
+				alert(error.message);
+			}
+		});
+
+
+
+
+
+
+
+
+
+
+		alert_cancel.addEventListener("click", ()=>{
+			window.location.href = "/refer";
+			closs_alert();
+		});
+
+
+
+		body_overlay.addEventListener("click", ()=>{
+			closs_alert();
+		});
+
+		window.onscroll = function() {
+			closs_alert();
+		};
+
+	</script>
+
+
+
+</body>
+</html>

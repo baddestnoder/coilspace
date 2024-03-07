@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<%-include("./partialTemplate/meta.ejs")%>
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+
+	<title>CoilSpace | Main Page </title>
+
+
+	<style>
+		footer .home a{
+		color: blue;
+		}
+
+		footer .home i{
+			color: blue;
+		}
+
+	</style>
+</head>
+
+
+
+
+<body>
+
+	<%-include("./partialTemplate/header.ejs")%>
+
+
+
+	<%
+		const currencyFormatter = new Intl.NumberFormat(data.currency_format, {
+		    style: 'currency',
+		    currency: data.currency
+		});
+	%>
+
+
+	<main>
+
+		<section class="line_up_wrapper">
+		
+			<article class="buy_coil">
+				<i class="fa-solid fa-cart-shopping"></i>
+				<p>Buy Coil</p>
+			</article>
+
+
+			<article onclick="location.href='/investment'">
+				<i class="fa-solid fa-arrow-up-right-dots"></i>
+				<p>Invest</p>
+			</article>
+
+
+			
+
+
+			<article onclick="location.href='/generateCoil'">
+				<i class="fa-solid fa-down-left-and-up-right-to-center"></i>
+				<p>Generate Coil</p>
+			</article>
+
+			<article onclick="location.href='/agent'">
+				<i class="fa-solid fa-user-tie"></i>
+				<p>Coil Agency</p>
+			</article>
+
+
+			<%if(data.agent){%>
+				<article onclick="location.href='/deposit'">
+					<i class="fa-solid fa-circle-down"></i>
+					<p>Deposit</p>
+				</article>
+			<%}else{%>
+				<article onclick="location.href='/history'">
+					<i class="fa-regular fa-file-lines"></i>
+					<p>History</p>
+				</article>
+			<%}%>
+
+			<article onclick="location.href='/refer'">
+				<i class="fa-solid fa-users"></i>
+				<p>Invite & Earn</p>
+			</article>
+
+		</section>
+
+
+
+
+		<section class="invesment_wrapper">
+
+			<%if(myInvestment.length > 0){%>
+
+				<%for(i=myInvestment.length - 1; i >= 0; i--){%>
+
+					<article id="<%=myInvestment[i].coil_id%>" onclick="window.location.href='/coil/<%=myInvestment[i].coil_id%>'">
+							<h3><div><i class="fa-solid fa-check"></i></div><div>Coil Investment <span> 11/01/2024</span></div></h3>
+						<div class="invesment_detail">
+							<i class="fa-solid fa-arrow-up-right-dots"></i>
+							<h4><%=myInvestment[i].unit%> Unit</h4>
+							<p class="value"><%=currencyFormatter.format(myInvestment[i].value * myInvestment[i].unit * rate)%> <span>Current Value</span></p>
+						</div>
+					</article>
+				<%}%>
+				
+
+			<%}%>
+
+		</section>
+
+		<section class="buy_method_wrapper">
+			<i class="buy_method_wrapper_cancel fa-solid fa-xmark"></i>
+			<h2>Choose Purchase Method</h2>
+			<button onclick="location.href='/generateCoil'" class="using_wallet_balance">Purchase using Wallet Balance</button>
+			<button onclick="location.href='/buy_coil'">Purchase using Bank Transfer</button>
+		</section>
+	</main>
+
+
+	<%-include("./partialTemplate/footer.ejs")%>
+
+
+
+
+
+	<script type="text/javascript">
+
+
+		const using_wallet_balance = document.querySelector(".using_wallet_balance");
+
+		const buy_coil = document.querySelector(".buy_coil");
+		const buy_method_wrapper = document.querySelector(".buy_method_wrapper");
+		const buy_method_wrapper_cancel = document.querySelector(".buy_method_wrapper_cancel");
+
+
+
+
+
+		const closs_buy_method = ()=>{
+			body_overlay.style.opacity = "0";
+			body_overlay.style.display = "none";
+			buy_method_wrapper.style.display = "none";
+		}
+
+
+		buy_coil.addEventListener("click", ()=>{
+			body_overlay.style.display = "block";
+			body_overlay.style.opacity = "0.7";
+			buy_method_wrapper.style.display = "block";
+		});
+
+
+		body_overlay.addEventListener("click", ()=>{
+			closs_buy_method();
+		});
+
+		buy_method_wrapper_cancel.addEventListener("click", ()=>{
+			closs_buy_method();
+		});
+
+		window.onscroll = function() {
+			closs_buy_method();
+		};
+
+		
+	</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%-include("./partialTemplate/meta.ejs")%>
+
+
+
+
+	<style type="text/css">
+
+
+
+
+		main{
+			width: 90%;
+			margin: 10px auto;
+		}
+
+
+		main p{
+			margin: 30px 0 0 0;
+		}
+
+		.finished span{
+			color: orange;
+		}
+
+		.good span{
+			color: blue;
+		}
+
+		.timeout span{
+			color: red;
+		}
+		
+		i{
+			animation-name: loader;
+			animation-duration: 1s;
+			animation-timing-function: linear;
+			animation-iteration-count: infinite;
+			display: block;
+			width: 100%;
+			margin-top: 50px;
+			text-align: center;
+			font-size: 7rem;
+			color: green;
+			display: none;
+		}
+
+
+		@keyframes loader{
+			0%{
+				transform: rotate(0deg);
+			}
+
+
+			100%{
+				transform: rotate(360deg);
+			}
+		}
+
+
+	</style>
+	
+	
+</head>
+
+
+
+<body>
+
+
+
+	<main>
+		<i class="fa-solid fa-spinner"></i>
+		<div class="info"></div>
+	</main>
+
+
+
+
+
+	<script type="text/javascript">
+
+
+
+
+
+
+	const get_time = ()=>{
+		const a = new Date();
+		
+		const time = a.getHours()+":"+a.getMinutes();
+		return time;
+	}
+
+
+
+		const div = document.querySelector("div");
+		const info = document.querySelector(".info")
+		const loader = document.querySelector("i");
+
+
+
+		let outPut = [];
+
+		
+
+		const startSharing = async()=>{
+
+
+			try{
+
+
+				if(outPut.length > 4){
+					outPut.pop();
+				}
+
+				loader.style.display = "block";
+
+				const result = await fetch("/shareCoil", {
+
+					method: "POST",
+					header: {"Content-Type": "application/json"},
+					body: JSON.stringify({
+						name: "start"
+					})
+				});
+
+				const res = await result.json();
+
+				loader.style.display = "none";
+
+
+				console.log(res)
+
+
+				if(res.message === "finished"){
+
+					outPut.unshift(`<p class="finished"><span>${get_time()}: FINISHED: </span> There is no investment to share for now... This is because there are less investors <br> PROCESS_TIME: ${res.time} seconds.</p>`);
+
+					outPut.forEach((each)=>{
+						info.innerHTML = outPut ;
+					});
+
+
+					let time = 5000;
+
+
+					if(res.time < 20){
+						time = 5000;
+					}else if(res.time < 50){
+						time = 100000;
+					}else if(res.time < 100){
+						time = 70000;
+					}else if(res.time < 150){
+						time = 30000;
+					}else if(res.time < 200){C
+						time = 15000;
+					}else{
+						time = 5000;
+					}
+
+
+					setTimeout(()=>{
+						startSharing();
+					}, time);
+
+				}else if(res.message === "time out reached"){
+
+					outPut.unshift(`<p class="timeout"><span>${get_time()}: DANGEROUS:</span> Timeout Reached: This might be because of bad connection, but can also be because the Investment collection is too large that sharing can not complete within 5 minute <br> PROCESS_TIME: ${res.time} seconds.</p>`);
+
+					outPut.forEach((each)=>{
+						info.innerHTML = outPut ;
+					});
+					
+					
+					startSharing();
+				}else if(res.message === "One share completed"){
+
+					outPut.unshift(`<p class="good"><span>${get_time()}: GOOD: </span> ${res.unit} unit has been shared among all investors and we might still have more investment to share <br> PROCESS_TIME: ${res.time} seconds.</p>`);
+
+					outPut.forEach((each)=>{
+						info.innerHTML = outPut ;
+					});
+					startSharing();	
+				}
+			}catch(error){
+				window.location.href = "/shareCoil";
+			}
+		}
+
+
+		startSharing()
+	</script>
+
+</body>
+</html>

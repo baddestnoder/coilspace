@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<%-include("./partialTemplate/meta.ejs")%>
+
+	<title>CoilSpace | Store Your Coil</title>
+
+
+	<style type="text/css">
+		
+		@media screen and (min-width: 200px){
+
+			main{
+				width: 80%;
+				margin: 40px auto 0 auto;
+			}
+
+
+
+
+
+			.parent_wrapper p{
+				margin-top: 4px;
+				font-size: 1rem;
+				color: rgb(80, 80, 80);
+			}
+
+
+			form{
+				margin: 25px 0 0 0;
+			}
+
+
+			input{
+				font-size: 1.1rem;
+				display: block;
+				height: 40px;
+				border: 2px solid rgb(70, 70, 70);
+				border-radius: 5px;
+				padding-left: 10px;
+				width: 67%;
+				margin-bottom: 10px;
+			}
+
+
+			button{
+				margin-top: 5px;
+				font-size: 1.1rem;
+				display: inline-block;
+				padding: 12px 15px;
+				border-radius: 5px;
+				background-color: rgb(0, 100, 80);
+				color: white;
+				border: 1px solid rgb(0, 100, 50);
+			}
+
+
+		}
+	</style>
+</head>
+
+
+
+
+
+
+
+
+
+
+<body>
+
+	<%-include("./partialTemplate/header.ejs")%>
+
+
+	<%
+		const currencyFormatter = new Intl.NumberFormat(data.currency_format, {
+		    style: 'currency',
+		    currency: data.currency,
+            maximumFractionDigits: 0 
+		});
+	%>
+
+
+	<main class="parent_wrapper">
+
+		<article class="this_article">
+			<h1>Generate Coil</h1>
+			<p>You can generate a Coil of any value; the amount you input determines the value of the generated Coil.</p>
+			
+		</article>
+
+		
+
+		<form>
+
+			<input step="any" placeholder="Enter Amount" type="number" name="amount" required>
+			
+			<input placeholder="Enter Your Password" type="password" name="password" required>
+			<button class="submit_button">Generate</button>
+		</form>
+
+
+	</main>
+
+
+	<section style="display: none;" class="alert_wrapper">
+		<i class="alert_icon fa-solid fa-circle-exclamation"></i>
+		<p class="alert_p"></p>
+		<button class="alert_cancel">Okay</button>
+	</section>
+
+	<%-include("./partialTemplate/footer.ejs")%>
+
+
+
+
+
+	<script type="text/javascript">
+		
+		const header = document.querySelector("header");
+		const form = document.querySelector("form");
+		const alert_p = document.querySelector(".alert_p");
+		const alert_icon = document.querySelector(".alert_icon");
+		const alert_cancel = document.querySelector(".alert_cancel");
+		const alert_wrapper = document.querySelector(".alert_wrapper");
+		const submit_button = document.querySelector(".submit_button")
+
+
+
+
+
+		const display_alert = ()=>{
+			body_overlay.style.display = "block";
+			body_overlay.style.opacity = "0.8";
+			alert_wrapper.style.display = "block";
+
+			const scrollY = window.scrollY || window.pageYOffset;
+		  	const topPosition = 100+scrollY + 'px';
+		    alert_wrapper.style.top = topPosition;
+		}
+
+
+		const closs_alert = ()=>{
+			body_overlay.style.opacity = "0";
+			body_overlay.style.display = "none";
+			alert_wrapper.style.display = "none";
+		}
+
+
+
+
+
+
+
+
+		const currencyFormatter = new Intl.NumberFormat(header.dataset.format, {
+		    style: 'currency',
+		    currency: header.dataset.currency,
+            maximumFractionDigits: 0
+		});
+
+
+
+
+		let date = new Date().toLocaleString(header.dataset.format, {
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+			hour: '2-digit',
+			minute: '2-digit',
+			hour12: true,
+		});
+
+
+
+
+
+
+		form.addEventListener("submit", async(e)=>{
+			e.preventDefault();
+
+
+			if(submit_button.disabled){
+			}else{
+				submit_button.disabled = true
+				submit_button.textContent = "Loading...";
+
+				try{
+
+					alert_cancel.textContent = "Okay";
+
+					const result = await fetch("/generateCoil", {
+
+						method: "POST",
+
+						body: JSON.stringify({
+							amount: form.amount.value,
+							password: form.password.value,
+							date
+						}),
+
+						headers: {"Content-Type": "application/json"}
+
+						
+					});
+
+					const res = await result.json();
+
+
+					form.password.value = "";
+					submit_button.disabled = false
+					submit_button.textContent = "Generate";
+
+					if(res.message.coil_id){
+						alert_icon.className = "alert_icon fa-regular fa-circle-check";
+						alert_p.textContent = "Generated Successful";
+
+						display_alert();
+
+						alert_cancel.addEventListener("click", ()=>{
+							window.location.href = "/coilCard/"+res.message.coil_id
+						});
+
+						setTimeout(()=>{
+							window.location.href = "/coilCard/"+res.message.coil_id
+						}, 5000);
+
+					}else if(res.message === "bad network"){
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = "Something went wrong: seems you're having a bad network connection.";
+
+						display_alert();
+					}else if(res.message === "login needed"){
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = "Something Went Wrong: for your own safety, we are logging you out... Login and try again.";
+
+						display_alert();
+
+						alert_cancel.addEventListener("click", ()=>{
+							window.location.href = "/login"
+						});
+
+						setTimeout(()=>{
+							window.location.href = "/login";
+						}, 5000);
+
+					}else if(res.message === "low balance"){
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = "Your wallet balance is lower than the amount you input.";
+
+						display_alert();
+
+					}else{
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = res.message+": Please refresh and try again... If this error keep occurring, kindly report this error.";
+
+						display_alert();
+					}
+				}catch(error){
+					console.log(error)
+					alert_icon.className = "alert_icon fa-regular fa-circle-check";
+					alert_p.textContent = error.message;
+
+					display_alert();
+				}
+			}
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+		body_overlay.addEventListener("click", ()=>{
+			closs_alert();
+		});
+
+		alert_cancel.addEventListener("click", ()=>{
+			closs_alert();
+		});
+
+		window.onscroll = function() {
+			closs_alert();
+		};
+
+
+	</script>
+
+
+</body>
+</html>

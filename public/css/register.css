@@ -1,0 +1,272 @@
+@media screen and (min-width: 200px){
+
+
+	*{
+		padding: 0;
+		margin: 0;
+		list-style-type: none;
+
+	}
+
+	html{
+		font-family: arial, helvetica, sans-serif;
+		font-size: 8px;
+	}
+
+
+
+	body{
+		background-color: rgb(235 255 225);
+	}
+
+
+
+
+	.body_overlay{
+		bottom: 0; top: 0; left: 0; right: 0;	
+		z-index: 3;
+		width: 100%;
+		opacity: 0;
+		display: none;
+		background-color: black;
+		position: absolute;
+	}
+
+
+
+
+	main{
+		padding-bottom: 20px;
+	}
+
+	
+
+
+	.site_logo_in_login{
+		font-size: 1.7rem;
+		font-family: 'Montserrat', sans-serif;
+		color: rgb(20, 170, 30);
+		margin: 17px 0 20px calc(5% - 2px);
+		text-align: left;
+		width: 90%;
+	}
+
+	.site_logo_in_login i{
+		font-size: 2.5rem;
+	}
+
+	.site_logo_in_login span{
+		color: rgb(190, 30, 30);
+	}
+
+	form{
+		position: relative;
+		background-color: white;
+		padding: 20px 0 20px 0;
+		width: 90%;
+		height: 350px;
+		margin: auto;
+		margin-top: 40px;
+		border-radius: 8px;
+		box-shadow: rgb(150, 200, 170) 0px 0px 20px 0px;
+	}
+
+	.password_section, .email_section{
+		width: 100%;
+		position: absolute;
+		top: 90px;
+	}
+
+
+	input, select{
+		background-color: rgb(235 255 225);
+		display: block;
+		padding-left: 10px;
+		padding-right: 10px;
+		width: calc(90% - 20px);
+		height: 30px;
+		margin: auto;
+		border: 1px solid rgb(210, 210, 210);
+		font-size: 1.4rem;
+	}
+	input:focus{
+		background-color: rgb(220 223 220);
+	}
+
+	select{
+		margin: 0 0 auto calc(5% - 2.5px);
+		width: 180px;
+	}
+
+	
+
+	.error{
+		font-size: 1.2rem;
+		color: red;
+		width: calc(90% - 10px);
+		margin: 3px auto 0 auto;
+	}
+
+	.fName, .lName, .password, .rePassword{
+		margin-top: 15px;
+	}
+
+
+	button{
+		display: block;
+		border-radius: 5px;
+		width: calc(86% + 10px + 2px);
+		margin: auto;
+		margin-top: 30px;
+		padding: 10px 0;
+		font-size: 1.4rem;
+		border: none;
+		color: white;
+		background-color: rgb(50, 160, 100);
+	}
+
+
+	.next_button{
+		width: 60px;
+		box-sizing: content-box;
+		margin-top: 35px;
+		margin-right: 5%;
+		padding: 12px 10px;
+		background-color: rgb(50, 100, 160);
+	}
+
+
+	.no_account{
+		font-size: 1.3rem;
+		text-align: center;
+		margin-top: 40px;
+	}
+
+
+	.loginButton{
+		background-color: rgb(160, 20, 0);
+		
+		width: 60%;
+		margin-top: 10px;
+	}
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+@media screen and (min-width: 250px){
+
+	html{
+		font-size: 9px;
+	}
+
+
+
+
+
+	input, select{
+		height: 35px;
+	}
+
+
+	button{
+		padding: 11px 0;
+	}
+
+}
+
+
+
+
+
+@media screen and (min-width: 300px){
+
+	html{
+		font-size: 10px;
+	}
+
+
+
+
+
+	input, select{
+		height: 38px;
+	}
+
+
+	button{
+		padding: 12px 0;
+	}
+}
+
+
+
+
+
+
+
+@media screen and (min-width: 350px){
+
+	html{
+		font-size: 11px;
+	}
+
+	.login_facebook{
+		font-size: 2rem;
+		font-weight: 600;
+		padding: 10px 0 20px 0;
+		color: rgb(50, 50, 50);
+	}
+
+
+
+
+	input, select{
+		height: 45px;
+	}
+
+
+	button{
+		padding: 15px 0;
+	}
+
+
+}
+
+
+
+
+
+
+
+
+
+@media screen and (min-width: 500px){
+	main{
+		max-width: 500px;
+		margin: auto;
+		margin-top: 30px;
+	}
+
+
+
+	form{
+		width: 85%;
+		box-shadow: 0 0 7px  0 rgb(170, 170, 170);
+		margin-top: 10px;
+	}
+
+}

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<%-include("./partialTemplate/meta.ejs")%>
+	<title>CoilSpace | Agent Page </title>
+
+
+
+	<style>
+
+		@media screen and (min-width: 200px){
+
+
+			.wallet_wrapper{
+				display: none;
+			}
+
+
+			main{
+				padding: 50px 7% 0 7%;
+				border-top: 1px solid rgb(200, 200, 200);
+			}
+
+
+
+
+
+
+
+			
+
+			
+
+
+			h1{
+				font-size: 1.7rem;
+				width: 70%;
+				color: rgb(50, 50, 50);
+				margin-bottom: 5px;
+			}
+
+
+			main p{
+				color: rgb(100, 100, 100);
+			}
+
+
+
+
+			.rate_wrapper{
+				margin-top: 40px;
+				transform: rotateZ(180deg);
+				border: 1px solid rgb(190, 190, 190);
+				border-bottom: none;
+				box-sizing: content-box;
+				height: 100px;
+				display: grid;
+				grid-template-columns: 1fr 1fr 1fr;
+				
+			}
+
+
+
+
+			.rate_wrapper div{
+				margin: 0 auto;
+				width: 10px;
+				position: relative;
+			}
+
+
+			.rate_wrapper div::before{
+				margin-left: 12px;
+				display: inline-block;
+				transform: rotateZ(180deg);
+				bottom: 0;
+				font-size: 0.8rem;
+				position: absolute;
+			}
+
+
+
+			.trust_rate::before{
+				content: var(--before-content, "Before content: ");
+			}
+
+
+			.available_rate::before{
+				content: var(--before-content, "Before content: ");
+			}
+
+
+			.rude_rate::before{
+				content: var(--before-content, "Before content: ");
+			}
+
+
+
+
+			.rate_text_wrapper{
+				width: 100%;
+				text-align: center;
+				display: grid;
+				grid-template-columns: 1fr 1fr 1fr;
+				margin: 5px 0 0 0;
+				font-family: arial;
+				color: black;
+				font-weight: 600;
+			}
+
+
+
+			.rate_text_wrapper p{
+				color: black;
+				width: 100%;
+				bottom: 0;
+			}
+
+
+			.feedback_text{
+				margin-top: 20px;
+				color: black;
+				line-height: 1.3;
+				background-color: rgb(240, 240, 240);
+				padding: 20px 10px;
+				border-radius: 10px;
+			}
+
+
+
+
+
+
+
+
+
+
+			.rate_contact_wrapper{
+				margin-top: 40px;
+				display: grid;
+
+				text-align: center;
+				grid-template-columns: 1fr 1fr;
+				grid-gap: 0 10px;
+			}
+
+
+			.rate_contact_wrapper p{
+				font-weight: 600;
+				font-family: arial;
+				color: rgb(0, 170, 0);
+				padding: 0 0 10px 0;
+				border: 1px solid rgb(130, 255, 130);
+			}
+
+			.rate_contact_wrapper p+p{
+				border: 1px solid rgb(255, 170, 170);
+				color: red;
+			}
+
+
+			.rate_contact_wrapper i{
+				background-color: white;
+				padding-bottom: 16px;
+				display: block;
+				font-size: 2rem;
+			}
+
+
+			.rate_contact_wrapper i::before{
+				background-color: white;
+				padding: 10px 13px;
+				border: 1px solid rgb(130, 255, 130);
+				border-radius: 50%;
+			}
+
+			.rate_contact_wrapper p+p i::before{
+				padding: 10px;
+				border: 1px solid rgb(255, 170, 170);
+			}
+
+			.rate_message{
+				padding-bottom: 50px;
+				margin: 20px 0 0 0;
+			}
+
+
+
+			.alert_button_wrapper{
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+			}
+
+			.alert_button_wrapper button+button{
+				background-color: rgb(210, 30, 50);
+			}
+		}
+
+	</style>
+
+
+
+</head>
+
+
+
+
+<body>
+
+	<%-include("./partialTemplate/header.ejs")%>
+
+
+
+	<%
+		const currencyFormatter = new Intl.NumberFormat(data.currency_format, {
+		    style: 'currency',
+		    currency: data.currency
+		});
+	%>
+
+
+	<main>
+
+		<h1>Agent's Reviews and Rate</h1>
+		<p>This review is given by traders who have made transactions with this Dealer.</p>
+
+
+
+		<%if(thisAgent.unavailable_rate < 1){%>
+			<%thisAgent.unavailable_rate = 1%>
+		<%}%>
+
+		<%if(thisAgent.rude_rate < 1){%>
+			<%thisAgent.rude_rate = 1%>
+		<%}%>
+
+
+		<div class="rate_wrapper">
+			<div style="height: <%=100 / thisAgent.unavailable_rate%>px" class="available_rate"></div>
+			<div class="trust_rate"></div>
+			<div style="height: <%=100 / thisAgent.rude_rate%>px" class="rude_rate"></div>
+		</div>
+
+
+		<div class="rate_text_wrapper">
+			<p>Politeness</p>
+			<p>Trust Rate</p>
+			<p>Availability</p>
+		</div>
+
+
+
+		
+			<p class="feedback_text">
+				This Dealer has never been involved in any fraud-related case and has been rated to be <%=parseInt(100 / thisAgent.unavailable_rate)%>% online and <%=parseInt(100 / thisAgent.rude_rate)%>% polite.
+
+			</p>
+
+
+
+		<div class="rate_contact_wrapper">
+			<p onclick="window.location.href='<%=thisAgent.whatsapp_link%>'"><i class="fa-brands fa-whatsapp"></i> Contact Dealer</p>
+			<p class="rate_dealer"><i class="fa-regular fa-star"></i> Rate Dealer</p>
+		</div>
+
+		<p class="rate_message">After contacting with him, Please rate your experience... Your Review is very important.</p>	
+
+	</main>
+
+
+
+	<section style="display: none;" class="alert_wrapper">
+		<i class="fa-regular fa-star"></i>
+		<p class="alert_p"></p>
+
+		<div class="alert_button_wrapper">
+			<button class="alert_cancel true">Yes</button>
+			<button class="alert_cancel false">No</button>
+		</div>
+	</section>
+
+
+
+
+
+	<section style="display: none;" class="ender_alert_wrapper alert_wrapper">
+		<i class="fa-regular fa-thumbs-up"></i>
+		<p class="alert_p ender_alert_p"></p>
+		<button class="ender_alert_cancel alert_cancel">Okay</button>
+		</div>
+	</section>
+
+
+	<%-include("./partialTemplate/footer.ejs")%>
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript" async>
+
+
+		const rate_dealer_button = document.querySelector(".rate_dealer");
+		const alert_p = document.querySelector(".alert_p");
+		const true_button = document.querySelector(".true");
+		const false_button = document.querySelector(".false");
+		const alert_button = document.querySelectorAll(".alert_cancel");
+		const alert_wrapper = document.querySelector(".alert_wrapper");
+
+		const feedback_text = document.querySelector(".feedback_text");
+
+		const ender_alert_wrapper = document.querySelector(".ender_alert_wrapper");
+		const ender_cancel = document.querySelector(".ender_alert_cancel");
+		const ender_alert_p = document.querySelector(".ender_alert_p");
+
+		const available_rate = document.querySelector(".available_rate");
+		const rude_rate = document.querySelector(".rude_rate");
+		const trust_rate = document.querySelector(".trust_rate");
+
+
+
+		if(<%=thisAgent.crime_rate%> === 0){
+			trust_rate.style.setProperty('--before-content', '"100%"');
+			trust_rate.style.backgroundColor = "green";
+			trust_rate.style.color = "green";
+			trust_rate.style.height = "100px";
+		}else{
+			feedback_text.textContent = "This Dealer has been reported for fraud, and investigation is ongoing.";
+			feedback_text.style.color = "rgb(200, 50, 70)";
+			trust_rate.style.setProperty('--before-content', '"15%"');
+			trust_rate.style.backgroundColor = "red";
+			trust_rate.style.color = "red";
+			trust_rate.style.height = "15px";
+		}
+
+
+
+		available_rate.style.setProperty('--before-content', `"${parseInt(available_rate.offsetHeight)}%"`);
+		if(parseInt(available_rate.offsetHeight) < 40){
+			available_rate.style.backgroundColor = "red";
+			available_rate.style.color = "red";
+		}else if(parseInt(available_rate.offsetHeight) < 84){
+			available_rate.style.backgroundColor = "blue";
+			available_rate.style.color = "blue";
+		}else{
+			available_rate.style.backgroundColor = "green";
+			available_rate.style.color = "green";
+		}
+
+
+
+		rude_rate.style.setProperty('--before-content', `"${parseInt(rude_rate.offsetHeight)}%"`);
+		if(parseInt(rude_rate.offsetHeight) < 40){
+			rude_rate.style.backgroundColor = "red";
+			rude_rate.style.color = "red";
+		}else if(parseInt(rude_rate.offsetHeight) < 84){
+			rude_rate.style.backgroundColor = "blue";
+			rude_rate.style.color = "blue";
+		}else{
+			rude_rate.style.backgroundColor = "green";
+			rude_rate.style.color = "green";
+		}
+
+
+
+
+
+
+
+
+
+
+		
+		
+
+		rate_dealer_button.addEventListener("click", async()=>{
+
+			alert_p.textContent = "Did you contact this Dealer?";
+			display_alert();
+		});
+
+
+
+
+
+		let counter = 0;
+
+		let rude = 0;
+		let unavailable = 0;
+		let scam = 0;
+
+
+
+
+		rate_dealer_button.addEventListener("click", async()=>{
+			counter = 0;
+
+			rude = 0;
+			unavailable = 0;
+			scam = 0;
+
+			alert_p.textContent = "Did you contact this Dealer?";
+			display_alert();
+		});
+
+
+
+
+
+		true_button.addEventListener("click", ()=>{
+
+			if(counter === 0){
+				alert_p.textContent = "Was he available online?";
+			}
+
+			if(counter === 1){
+				unavailable -1;
+				alert_p.textContent = "Did you enjoy your conversation with this Dealer?";
+			}
+
+			if(counter === 2){
+				rude = -1;
+				unavailable = -1;
+				close_alert()
+				display_ender_alert();
+				ender_alert_p.textContent = "We are happy to hear this!!! We will recommend this Dealer to more traders... We appreciate your sincere feedback.";
+			}
+
+			if(counter === 3){
+				scam = 1;
+				rude = 2;
+				unavailable -1;
+				close_alert()
+				display_ender_alert();
+				ender_alert_p.textContent = "This is a serious concern!!! Please send an email to doleef@gmail.com and include all evidence against this Dealer.";
+			}
+
+			counter++
+		});
+
+
+
+
+
+
+
+		false_button.addEventListener("click", ()=>{
+
+			if(counter === 0){
+				close_alert()
+				display_ender_alert();
+				ender_alert_p.textContent = "Please reach out to the dealer to purchase the coil before rating him. Thanks for your time...";
+			}
+
+			if(counter === 1){
+				unavailable = 2;
+				close_alert()
+				display_ender_alert();
+				ender_alert_p.textContent = "We appreciate your feedback and apologies for any inconvenience. Please click 'Okay,' and we'll give you another list of dealers. Thank you for your understanding.";
+			}
+
+			if(counter === 2){
+				rude = 2;
+				unavailable = -1
+				alert_p.textContent = "Did he attempt to deceive or scam you?";
+			}
+
+			if(counter === 3){
+				unavailable = -1
+				rude = 2;
+				close_alert()
+				display_ender_alert();
+				ender_alert_p.textContent = "We appreciate your feedback and apologies for any inconvenience. Please click 'Okay,' and we'll give you another list of dealers. Thank you for your understanding.";
+			}
+
+			counter++
+		});
+
+
+
+
+
+
+
+
+		const display_alert = ()=>{
+			body_overlay.style.display = "block";
+			body_overlay.style.opacity = "0.8";
+			alert_wrapper.style.display = "block";
+
+			const scrollY = window.scrollY || window.pageYOffset;
+		  	const topPosition = 100+scrollY + 'px';
+		    alert_wrapper.style.top = topPosition;
+		}
+
+		const close_alert = ()=>{
+			body_overlay.style.opacity = "0";
+			body_overlay.style.display = "none";
+			alert_wrapper.style.display = "none";
+		}
+
+
+
+
+		const close_ender_alert = ()=>{
+			body_overlay.style.opacity = "0";
+			body_overlay.style.display = "none";
+			ender_alert_wrapper.style.display = "none";
+		}
+
+
+		body_overlay.addEventListener("click", ()=>{
+			close_alert();
+		});
+
+
+		window.onscroll = function() {
+			close_alert();
+		};
+
+
+		ender_cancel.addEventListener("click", async()=>{
+			close_ender_alert();
+		});
+
+
+
+
+
+
+		let rateCount = 0;
+
+		const display_ender_alert = async()=>{
+			body_overlay.style.display = "block";
+			body_overlay.style.opacity = "0.8";
+			ender_alert_wrapper.style.display = "block";
+
+			const scrollY = window.scrollY || window.pageYOffset;
+		  	const topPosition = 100+scrollY+'px';
+		    ender_alert_wrapper.style.top = topPosition;
+
+
+		    try{
+				const result = await fetch("/agentRate", {
+					body: JSON.stringify({
+						rude,
+						unavailable,
+						scam,
+						rateCount,
+						agent_id: "<%-thisAgent._id%>",
+					}),
+
+					headers: {"Content-Type": "application/json"},
+
+					method: "POST"
+				});
+
+				rateCount ++
+				const res = await result.json();
+
+				console.log(res);
+			}catch(error){
+				console.log(error);
+			}	    
+		}
+
+
+		
+
+
+
+	
+	</script>
+</body>
+</html>

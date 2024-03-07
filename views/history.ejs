@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<%-include("./partialTemplate/meta.ejs")%>
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+
+	<title>CoilSpace | History </title>
+
+
+
+	<style type="text/css">
+
+
+		@media screen and (min-width: 200px){
+
+
+
+			footer .history a{
+				color: blue;
+			}
+
+			footer .history i{
+				color: blue;
+			}
+
+
+			main{
+				margin-top: 30px;
+			}
+
+
+			
+			article{
+				display: grid;
+				grid-template-columns: 40px 3fr 2fr;
+				border-bottom: 1px solid rgb(230, 230, 230);
+				padding: 20px 10px 20px 10px;
+			}
+
+
+			main article+article{
+				border-top: none;
+			}
+
+			article div+div{
+				text-align: right;
+				margin-top: 3px;
+			}
+
+
+			main article i{
+				font-size: 1.3rem;
+				margin-top: 8px;
+			}
+
+
+
+			main article i::before{
+				color: rgb(0, 50, 150);
+				background-color: rgb(200, 230, 255);
+				border-radius: 50%;
+				padding: 7px;
+			}
+
+
+			.generate i::before{
+				color: rgb(0, 150, 50);
+				background-color: rgb(200, 255, 230);
+			}
+
+
+			.cash_out i::before{
+				color: rgb(230, 100, 40);
+				background-color: rgb(255, 230, 200);
+			}
+
+
+
+
+			.invest i::before{
+				color: rgb(230, 0, 0);
+				background-color: rgb(255, 210, 210);
+			}
+
+
+			main h2{
+				color: rgb(60, 60, 60);
+				font-size: 1.1rem;
+			}
+
+			main article p{
+				font-size: 0.8rem;
+			}
+
+
+			.successful{
+				margin-top: 7px;
+				color: rgb(0, 170, 0);
+			}
+
+			.date{
+				margin-top: 5px;
+				color: rgb(100, 100, 100);
+			}
+
+			.amount{
+				color: black;
+				font-weight: 600;
+			}
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+		@media screen and (min-width: 250px){
+
+
+			main h2{
+				font-size: 1.2rem;
+			}
+
+			main article p{
+				font-size: 0.9rem;
+			}
+
+		}
+
+
+
+
+
+
+
+
+		@media screen and (min-width: 300px){
+
+
+			article{
+				grid-template-columns: 50px 3fr 2fr;
+				padding: 30px 20px;
+			}
+
+
+			main article i::before{
+				padding: 13px;
+			}
+
+
+			main article i{
+				margin-top: 13px;
+			}
+
+
+		}
+
+
+
+
+		@media screen and (min-width: 350px){
+			article{
+				grid-template-columns: 55px 3fr 2fr;
+			}
+
+		}
+
+
+
+	</style>
+</head>
+
+
+
+
+<body>
+
+	<%-include("./partialTemplate/header.ejs")%>
+
+
+
+	<%
+		const currencyFormatter = new Intl.NumberFormat(data.currency_format, {
+		    style: 'currency',
+		    currency: data.currency
+		});
+	%>
+
+
+	<main>
+
+
+		<%for(i=historyData.length - 1; i>= 0; i--){%>
+
+
+			<%if(historyData[i].type === "Deposit"){%>
+				<article class="deposit">
+					<i class="fa-solid fa-circle-down"></i>
+					<div>
+						<h2><%=historyData[i].type%></h2>
+						<p class="date"><%=historyData[i].date%></p>
+					</div>
+					<div>
+						<p class="amount">+<%=currencyFormatter.format(historyData[i].amount)%></p>
+						<p class="successful">Successful</p>
+					</div>
+				</article>
+			<%}else if(historyData[i].type === "Coil Generation"){%>
+				<article class="generate">
+					<i class="fa-solid fa-down-left-and-up-right-to-center"></i>
+					<div>
+						<h2><%=historyData[i].type%></h2>
+						<p class="date"><%=historyData[i].date%></p>
+					</div>
+					<div>
+						<p class="amount">-<%=currencyFormatter.format(historyData[i].amount)%></p>
+						<p class="successful">Successful</p>
+					</div>
+				</article>
+			<%}else if(historyData[i].type === "Cash Out"){%>
+				<article class="cash_out">
+					<i class="fa-solid fa-wallet"></i>
+					<div>
+						<h2><%=historyData[i].type%></h2>
+						<p class="date"><%=historyData[i].date%></p>
+					</div>
+					<div>
+						<p class="amount">+<%=currencyFormatter.format(historyData[i].amount)%></p>
+						<p class="successful">Successful</p>
+					</div>
+				</article>
+			<%}else if(historyData[i].type === "Investment"){%>{%>
+				<article class="invest">
+					<i class="fa-solid fa-arrow-up-right-dots"></i>
+					<div>
+						<h2><%=historyData[i].type%></h2>
+						<p class="date"><%=historyData[i].date%></p>
+					</div>
+					<div>
+						<p class="amount"><%=historyData[i].amount%> Unit</p>
+						<p class="successful">Successful</p>
+					</div>
+				</article>
+			<%}else{%>
+
+			<%}%>
+
+			
+		<%}%>
+
+	</main>
+
+
+	<%-include("./partialTemplate/footer.ejs")%>
+
+
+
+
+
+	<script type="text/javascript">
+
+		
+	</script>
+
+
+
+
+</body>
+</html>

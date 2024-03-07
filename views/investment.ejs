@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<%-include("./partialTemplate/meta.ejs")%>
+
+	<title>CoilSpace | Store Your Coil</title>
+
+
+	<style type="text/css">
+
+
+		@media screen and (min-width: 200px){
+
+			main{
+				position: relative;
+				width: 80%;
+				margin: 70px auto 0 auto;
+			}
+
+
+
+			h1{
+				color: rgb(50, 50, 50);
+				margin-bottom: 10px;
+			}
+
+
+
+			main p{
+				margin-top: 10px;
+			}
+
+
+			form{
+				margin: 20px 0 20px 0;
+			}
+
+
+			input{
+				display: inline-block;
+				height: 29px;
+				border: 1px solid rgb(70, 70, 70);
+				border-radius: 5px 0 0 5px;
+				padding-left: 10px;
+				width: 60%;
+				font-size: 1rem;
+			}
+
+
+			form button{
+				font-size: 1rem;
+				display: inline-block;
+				padding: 9px 8px;
+				border-radius: 0 5px 5px 0;
+				background-color: rgb(40, 170, 100);
+				border: 1px solid rgb(0, 100, 50);
+			}
+
+
+
+			main .purchase_statement{
+				margin-top: 50px;
+			}
+
+		}
+
+
+
+
+
+
+
+
+		@media screen and (min-width: 300px){
+
+			input{
+				height: 35px;
+			}
+
+
+
+			form button{
+				padding: 10px 12px;
+			}
+		}
+
+
+
+
+		@media screen and (min-width: 350px){
+
+			input{
+				height: 40px;
+			}
+
+
+
+			form button{
+				padding: 12.6px 20px;
+			}
+		}
+
+
+
+
+
+	</style>
+</head>
+
+
+
+
+<body>
+
+	<%-include("./partialTemplate/header.ejs")%>
+
+
+	<main>
+
+		<article class="this_article">
+			<h1>Enter Your Coil ID</h1>
+			<p>Gotten a coil ID?... Enter the coil ID below.</p>
+			
+		</article>
+
+		
+
+		<form>
+			<input placeholder="Enter Your Coil ID" type="text" name="coil_id" required>
+			<button class="submit_button">Invest</button>
+		</form>
+
+
+		
+		<p class="purchase_statement" style="font-style: italic;">Click here to purchase Coil if you have not.</p>
+
+
+	</main>
+
+
+
+	<section style="display: none;" class="alert_wrapper">
+		<i class="alert_icon fa-solid fa-circle-exclamation"></i>
+		<p class="alert_p"></p>
+		<button class="alert_cancel">Okay</button>
+	</section>
+
+	<%-include("./partialTemplate/footer.ejs")%>
+
+
+
+
+
+	<script type="text/javascript">
+
+
+		const form = document.querySelector("form");
+		const header = document.querySelector("header");
+		const alert_p = document.querySelector(".alert_p");
+		const alert_icon = document.querySelector(".alert_icon");
+		const alert_cancel = document.querySelector(".alert_cancel");
+		const alert_wrapper = document.querySelector(".alert_wrapper");
+		const submit_button = document.querySelector(".submit_button")
+
+
+
+
+		const display_alert = ()=>{
+			body_overlay.style.display = "block";
+			body_overlay.style.opacity = "0.8";
+			alert_wrapper.style.display = "block";
+
+			const scrollY = window.scrollY || window.pageYOffset;
+		  	const topPosition = 100+scrollY + 'px';
+		    alert_wrapper.style.top = topPosition;
+		}
+
+
+		const closs_alert = ()=>{
+			body_overlay.style.opacity = "0";
+			body_overlay.style.display = "none";
+			alert_wrapper.style.display = "none";
+		}
+
+
+
+
+		let date = new Date().toLocaleString(header.dataset.format, {
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+			hour: '2-digit',
+			minute: '2-digit',
+			hour12: true,
+		});
+
+
+
+
+
+
+
+
+		form.addEventListener("submit", async(e)=>{
+			e.preventDefault();
+
+
+			if(submit_button.disabled){
+			}else{
+
+				submit_button.disabled = true
+				submit_button.textContent = "Loading...";
+
+				try{
+
+					const result = await fetch("/investment/deposit", {
+						method: "POST",
+
+						body: JSON.stringify({
+							coil_id: form.coil_id.value,
+							date
+						}),
+
+						headers: {"Content-Type": "application/json"}
+					});
+
+
+					const res = await result.json();
+					submit_button.disabled = false
+					submit_button.textContent = "Invest";
+					
+					if(res.message.includes("already been used")){
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = res.message;
+
+						display_alert();
+					}else if(res.message === "successful"){
+						alert_icon.className = "alert_icon fa-regular fa-circle-check";
+						alert_p.textContent = "Your investment was successful... It's time to watch it gow.";
+
+						display_alert();
+
+						alert_cancel.addEventListener("click", ()=>{
+							window.location.href = "/main#"+res.coil_id
+						});
+
+						setTimeout(()=>{
+							window.location.href = "/main#"+res.coil_id
+						}, 8000);
+					}else if(res.message === "Invalid Coil ID"){
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = res.message;
+
+						display_alert();
+					}else if(res.message === "login needed"){
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = "Something Went Wrong: for your own safety, we are logging you out... Login and try again.";
+
+						display_alert();
+
+						alert_cancel.addEventListener("click", ()=>{
+							window.location.href = "/login";
+						});
+
+						setTimeout(()=>{
+							window.location.href = "/login";
+						}, 8000);
+					}else{
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = res.message;
+
+						display_alert();
+					}
+					
+				}catch(error){
+					alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+					alert_p.textContent = error.message;
+
+					display_alert();
+				}
+			}
+		});
+
+
+
+
+
+
+
+
+
+
+		body_overlay.addEventListener("click", ()=>{
+			closs_alert();
+		});
+
+		alert_cancel.addEventListener("click", ()=>{
+			closs_alert();
+		});
+
+		window.onscroll = function() {
+			closs_alert();
+		};
+
+
+
+
+
+
+	</script>
+
+
+</body>
+</html>

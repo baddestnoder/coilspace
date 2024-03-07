@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<%-include("./partialTemplate/meta.ejs")%>
+
+		<link type="text/css" rel="stylesheet" href="/css/register.css">
+
+
+
+
+		<title>CoilSpace | Register</title>
+
+
+		
+	</head>
+
+
+
+
+
+
+
+	<body data-inviter="<%=inviter%>">
+
+
+		<div class="body_overlay"></div>
+
+		
+		<main role="main">
+
+			<form data-inviter="<%=inviter%>">
+				<p class="site_logo_in_login"><span><i class="fa-solid fa-explosion"></i>Coil</span>Space</p>
+
+				<div style="z-index: 2;" class="email_section">
+					<input required class="input email" type="email" name="email" placeholder="Enter Email">
+					<div class="error email_error"></div>
+					<input required class="input fName" type="text" name="fName" placeholder="Enter First Name">
+					<div class="error fName_error"></div>
+					<input required class="input lName" type="text" name="lName" placeholder="Enter Last Name">
+					<div class="error lName_error"></div>
+
+					<button class="next_button">Next</button>
+				</div>
+
+
+				<div style="opacity: 0; z-index: 1;" class="password_section">
+				<select  class="country input" required name="country">
+						<option value="" selected disabled>Select Your Country</option>
+						<option data-format="en-AU" data-currency="AUD">Australia</option>
+						<option data-format="en-CA" data-currency="CAD">Canada</option>
+						<option data-format="en-GH" data-currency="GHS">Ghana</option>
+						<option data-format="en-IN" data-currency="INR">India</option>
+						<option data-format="en-KE" data-currency="KES">Kenya</option>
+						<option data-format="en-NG" data-currency="NGN">Nigeria</option>
+						<option data-format="en-PK" data-currency="PKR">Pakistan</option>
+						<option data-format="en-PH" data-currency="PHP">Philippines</option>
+						<option data-format="en-ZA" data-currency="ZAR">South Africa</option>
+						<option data-format="en-TZ" data-currency="TZS">Tanzania</option>
+						<option data-format="en-UG" data-currency="UGX">Uganda</option>
+						<option data-format="en-GB" data-currency="GBP">UK</option>
+						<option data-format="en-US" data-currency="USD">USA</option>
+					</select>
+					<div style="font-size: 0px;" class="error country_error"></div>
+
+					<input required class="input password" type="password" name="password" placeholder="Create Password">
+					<div class="error password_error"></div>
+					<input required class="input rePassword" type="password" name="rePassword" placeholder="Confirm Password">
+					<div class="error rePassword_error"></div>
+					<button class="signUpButton">Sign Up</button>
+				</div>
+			</form>
+
+			<p class="no_account">Already have account?</p>
+			<button onclick="window.location.href='/login'" class="loginButton">Login</button>
+
+
+			<section style="display: none;" class="alert_wrapper">
+				<i class="fa-solid fa-circle-exclamation"></i>
+				<p class="alert_p"></p>
+				<button class="alert_cancel">Okay</button>
+			</section>
+
+		</main>
+
+
+
+		<script type="text/javascript">
+
+			const form = document.querySelector("form");
+			const country = document.querySelector(".country");
+			const next_button = document.querySelector(".next_button");
+			const signUpButton = document.querySelector(".signUpButton");
+			const email_section = document.querySelector(".email_section");
+			const password_section = document.querySelector(".password_section");
+			const password_section_children = document.querySelectorAll(".password_section .input");
+			const email_section_children = document.querySelectorAll(".email_section .input");
+			const submit_button = document.querySelector(".signUpButton")
+
+			const body_overlay = document.querySelector(".body_overlay");
+			const alert_cancel = document.querySelector(".alert_cancel");
+			const alert_p = document.querySelector(".alert_p");
+			const alert_wrapper = document.querySelector(".alert_wrapper");
+
+
+
+
+
+			function formatDate(date) {
+				const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+				// Get month, day, hours, and minutes
+				const month = months[date.getMonth()];
+				const day = date.getDate();
+				const hours = date.getHours();
+				const minutes = date.getMinutes();
+				  
+				// Convert hours to 12-hour format and determine AM/PM
+				const ampm = hours >= 12 ? 'PM' : 'AM';
+				const formattedHours = hours % 12 || 12; // Handle 0 hours
+				  
+				// Format the date
+				const formattedDate = month + ' ' + day + ' at ' + formattedHours + ':' + (minutes < 10 ? '0' : '') + minutes + ' ' + ampm;
+
+				return formattedDate
+			} 
+			const currentDate = new Date();
+
+
+
+
+
+			const display_alert = ()=>{
+				body_overlay.style.display = "block";
+				body_overlay.style.opacity = "0.8";
+				alert_wrapper.style.display = "block";
+
+				const scrollY = window.scrollY || window.pageYOffset;
+			  	const topPosition = 100+scrollY + 'px';
+			    alert_wrapper.style.top = topPosition;
+			}
+
+
+			const closs_alert = ()=>{
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+				alert_wrapper.style.display = "none";
+			}
+
+
+
+
+
+
+			form.addEventListener("submit", async(e)=>{
+				e.preventDefault();
+			});
+
+
+
+
+
+			
+
+
+			next_button.addEventListener("click", (e)=>{
+
+				let empty = false
+
+				Array.from(email_section_children).forEach((each)=>{
+					if(each.value === "" || each.value === " "){
+						empty = true
+					}
+				});
+
+				if(empty === false){
+					email_section.style.opacity = "0";
+					email_section.style.zIndex = "1";
+					password_section.style.opacity = "1";
+					password_section.style.zIndex = "2";
+				}
+			});
+
+
+
+
+
+
+
+			//trying to get the dataset in option element which contain currency formats, not possible to get it directly because the dataset is not in select element, but is in option elements.
+
+			let selectedCountry = "";
+
+			country.addEventListener("change", ()=>{
+				selectedCountry = country.options[country.selectedIndex];
+			});
+
+
+
+
+
+
+			signUpButton.addEventListener("click", async(e)=>{
+
+				const allError = document.querySelectorAll(".error");
+
+				allError.forEach((each)=>{
+					each.textContent = "";
+				});
+
+
+				if(submit_button.disabled){
+				}else{
+					submit_button.disabled = true
+					submit_button.textContent = "Loading...";
+
+					try{
+					
+						let empty = false
+
+						Array.from(password_section_children).forEach((each)=>{
+
+							if(each.value === "" || each.value === " "){
+								empty = true
+							}
+						});
+
+						
+						if(form.password.value.length < 6 && form.password.value.length > 0){
+							document.querySelector(".password_error").textContent = "Please create a more secure password";
+						}else if(form.password.value !== form.rePassword.value){
+							document.querySelector(".rePassword_error").textContent = "Mismatched Password";
+						}else if(empty === true){
+							//Don't do anything if the fields are empty
+						}else{
+
+							const result = await fetch("/register", {
+
+								method: "POST",
+
+								headers: {"Content-Type": "application/json"},
+
+								body: JSON.stringify({
+									fName: form.fName.value,
+									lName: form.lName.value,
+									email: form.email.value,
+									password: form.password.value,
+									country: form.country.value,
+									currency_format: selectedCountry.dataset.format,
+									currency: selectedCountry.dataset.currency,
+									date: formatDate(currentDate),
+									inviter: form.dataset.inviter,
+								})
+							});
+
+							const res = await result.json();
+
+							submit_button.disabled = false
+							submit_button.textContent = "Sign Up";
+							
+							if(res.error){
+
+								if(res.error.code === "EMAIL_ALREADY_EXIST"){
+									document.querySelector(".email_error").textContent = res.error.message;
+
+									email_section.style.opacity = "1";
+									email_section.style.zIndex = "2";
+
+									password_section.style.opacity = "0";
+									password_section.style.zIndex = "1";
+								}else{
+
+									if(res.error.malicious === "password"){
+										res.error.message = "We can't accept this password, please choose another password.";
+									}else{
+										email_section.style.opacity = "1";
+										email_section.style.zIndex = "2";
+
+										password_section.style.opacity = "0";
+										password_section.style.zIndex = "1";
+									}
+
+									if(res.error.malicious === "email"){
+										res.error.message = "We can't accept this email address, please use another email.";
+									};
+
+									document.querySelector(`.${res.error.malicious}_error`).textContent = res.error.message;
+
+								};
+							}else if(res.message === "successful"){
+								window.location.href = "/main";
+							}else if(res.message === "bad network"){
+								alert_p.textContent = "Something went wrong: seems you're having a bad network connection.";
+
+								display_alert();
+							}else if(res.message.includes("Too many people queuing up")){
+								alert_p.textContent = res.message;
+
+								display_alert();
+							}else{
+								alert_p.textContent = res.message+": Please refresh and try again... If this error keep occurring, kindly report this error.";
+
+								display_alert();
+							};
+						};
+
+						
+					}catch(error){
+						alert_p.textContent = error.message;
+						console.log(error)
+
+						display_alert();
+					};
+				}
+			});
+
+
+
+
+
+
+
+
+
+
+			
+
+
+
+			body_overlay.addEventListener("click", ()=>{
+				closs_alert();
+			});
+
+			alert_cancel.addEventListener("click", ()=>{
+				closs_alert();
+			});
+
+			window.onscroll = function() {
+				closs_alert();
+			};
+
+
+
+		</script>
+
+
+	</body>
+</html>

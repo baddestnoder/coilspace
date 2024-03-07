@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<%-include("./partialTemplate/meta.ejs")%>
+
+	<style type="text/css">
+		
+		form{
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-gap: 30px;
+			padding: 50px 20px 0 20px;
+		}
+
+		form p{
+			font-size: 1.3rem;
+		}
+
+
+		input{
+			display: block;
+			width: 100%;
+			height: 35px;
+			padding: 0 5px 0 10px;
+			box-sizing: border-box;
+			border: 1px solid gray;
+			color: red;
+		}
+
+
+		button{
+			display: block;
+			background-color: rgb(0, 150, 100);
+			color: white;
+			padding: 10px 5px;
+			border: none;
+			width: 50%;
+			border-radius: 7px;
+			font-size: 1.1rem;
+			margin: 30px 0 50px auto;
+		}
+	</style>
+	
+</head>
+
+
+
+
+
+
+
+
+
+
+<body>
+
+	<main>
+		<form>
+			<div>
+				<p>Australia</p>
+				<input value="<%=data.australia_rate%>" required type="number" name="australia_rate">
+			</div>
+
+
+			<div>
+				<p>Canada</p>
+				<input value="<%=data.canada_rate%>" required type="number" name="canada_rate">
+			</div>
+
+
+			<div>
+				<p>Ghana</p>
+				<input value="<%=data.ghana_rate%>" required type="number" name="ghana_rate">
+			</div>
+
+
+			<div>
+				<p>India</p>
+				<input value="<%=data.india_rate%>" required type="number" name="india_rate">
+			</div>
+
+
+			<div>
+				<p>Kenya</p>
+				<input value="<%=data.kenya_rate%>" required type="number" name="kenya_rate">
+			</div>
+
+
+			<div>
+				<p>Nigeria</p>
+				<input value="<%=data.nigeria_rate%>" required type="number" name="nigeria_rate">
+			</div>
+
+
+			<div>
+				<p>Pakistan</p>
+				<input value="<%=data.pakistan_rate%>" required type="number" name="pakistan_rate">
+			</div>
+
+
+			<div>
+				<p>Philippines</p>
+				<input value="<%=data.philippines_rate%>" required type="number" name="philippines_rate">
+			</div>
+
+
+			<div>
+				<p>South Africa</p>
+				<input value="<%=data.south_africa_rate%>" required type="number" name="south_africa_rate">
+			</div>
+
+
+			<div>
+				<p>Tanzania</p>
+				<input value="<%=data.tanzania_rate%>" required type="number" name="tanzania_rate">
+			</div>
+
+
+			<div>
+				<p>Uganda</p>
+				<input value="<%=data.uganda_rate%>" required type="number" name="uganda_rate">
+			</div>
+
+
+			<div>
+				<p>UK</p>
+				<input value="<%=data.uk_rate%>" required type="number" name="uk_rate">
+			</div>
+
+
+			<div>
+				<p>USA</p>
+				<input value="<%=data.usa_rate%>" required type="number" name="usa_rate">
+			</div>
+
+
+
+			<button class="submit_button">Update</button>
+		</form>
+	</main>
+
+
+
+	<script type="text/javascript">
+		
+		const form = document.querySelector("form");
+		const submit_button = document.querySelector(".submit_button")
+
+
+
+		form.addEventListener("submit", async(e)=>{
+			e.preventDefault();
+
+
+			try{
+				submit_button.disabled = true
+				submit_button.textContent = "Loading...";
+
+				const result = await fetch("/update_rate", {
+
+					body: JSON.stringify({
+						australia_rate: form.australia_rate.value,
+						canada_rate: form.canada_rate.value,
+						ghana_rate: form.ghana_rate.value,
+						india_rate: form.india_rate.value,
+						kenya_rate: form.kenya_rate.value,
+						nigeria_rate: form.nigeria_rate.value,
+						pakistan_rate: form.pakistan_rate.value,
+						philippines_rate: form.philippines_rate.value,
+						south_africa_rate: form.south_africa_rate.value,
+						tanzania_rate: form.tanzania_rate.value,
+						uganda_rate: form.uganda_rate.value,
+						uk_rate: form.uk_rate.value,
+						usa_rate: form.usa_rate.value
+					}),
+
+					headers: {"Content-Type": "application/json"},
+
+					method: "POST"
+				});
+
+
+				const res = await result.json();
+				submit_button.disabled = false
+				submit_button.textContent = "Update";
+
+				if(res.message === "successful"){
+					alert("Done");
+				}else if(res.message === "security attack"){
+					alert("suspect")
+				}else if(res.message === "bad network"){
+					alert(res.message)
+				}else{
+					alert(res.message);
+				}
+
+			}catch(error){
+				alert(error.message);
+			}
+		});
+	</script>
+
+
+
+</body>
+</html>

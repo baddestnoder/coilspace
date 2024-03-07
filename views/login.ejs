@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<%-include("./partialTemplate/meta.ejs")%>
+
+		<link type="text/css" rel="stylesheet" href="/css/register.css">
+
+		<title>CoilSpace | Login</title>
+
+
+		<style type="text/css">
+
+			form{
+				height: 270px;
+			}	
+
+		</style>
+
+
+		
+	</head>
+
+
+
+	<body>
+
+
+
+
+		
+		<div class="body_overlay"></div>
+		<main role="main">
+
+			<form>
+				<p class="site_logo_in_login"><span><i class="fa-solid fa-explosion"></i>Coil</span>Space</p>
+				<input required class="email" type="email" name="email" placeholder="Enter Email">
+				
+				<input required class="password" type="password" name="password" placeholder="Enter Password">
+
+				<button class="signUpButton">Login</button>
+			</form>
+
+			<p class="no_account">Not Yet Registered?</p>
+			<button onclick="window.location.href='/register'" class="loginButton">Register</button>
+
+
+			<section style="display: none;" class="alert_wrapper">
+				<i class="fa-solid fa-circle-exclamation"></i>
+				<p class="alert_p"></p>
+				<button class="alert_cancel">Okay</button>
+			</section>
+
+		</main>
+
+
+
+
+
+
+
+
+
+		<script type="text/javascript">
+
+			const body_overlay = document.querySelector(".body_overlay");
+			const alert_cancel = document.querySelector(".alert_cancel");
+			const form = document.querySelector("form");
+			const alert_p = document.querySelector(".alert_p");
+			const alert_wrapper = document.querySelector(".alert_wrapper");
+			const submit_button = document.querySelector(".signUpButton")
+
+
+
+
+
+			const display_alert = ()=>{
+				body_overlay.style.display = "block";
+				body_overlay.style.opacity = "0.8";
+				alert_wrapper.style.display = "block";
+
+				const scrollY = window.scrollY || window.pageYOffset;
+			  	const topPosition = 100+scrollY + 'px';
+			    alert_wrapper.style.top = topPosition;
+			}
+
+
+			const closs_alert = ()=>{
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+				alert_wrapper.style.display = "none";
+			}
+
+
+		
+
+
+			form.addEventListener("submit", async(e)=>{
+				e.preventDefault();
+
+				if(submit_button.disabled){
+				}else{
+
+					submit_button.disabled = true
+					submit_button.textContent = "Loading...";
+
+					try{
+						const result = await fetch("/login", {
+
+							method: "POST",
+
+							headers: {"Content-Type": "application/json"},
+
+							body: JSON.stringify({
+								email: form.email.value,
+								password: form.password.value,
+							})
+						});
+
+						const res = await result.json();
+						
+						submit_button.disabled = false
+						submit_button.textContent = "Login";
+
+						if(res.message === "successful"){
+							window.location.href = "/main";
+						}else if(res.message === "blocked"){
+
+							alert_p.textContent = "Something went wrong: seems your Email or Password is not correct... Crosscheck your inputs and try again.";
+
+							display_alert();
+						}else if(res.message === "bad network"){
+							alert_p.textContent = "Something went wrong: seems you are having a bad network connection.";
+
+							display_alert();
+						}else{
+							alert_p.textContent = res.message+": Please refresh and try again... If this error keep occurring, kindly report this error.";
+
+							display_alert();
+						}
+					}catch(error){
+						alert_p.textContent = error.message;
+
+						display_alert();
+					}
+				}
+			});
+
+
+
+
+
+
+
+
+
+
+
+
+		body_overlay.addEventListener("click", ()=>{
+			closs_alert();
+		});
+
+		alert_cancel.addEventListener("click", ()=>{
+			closs_alert();
+		});
+
+		window.onscroll = function() {
+			closs_alert();
+		};
+
+
+
+
+		</script>
+
+
+	</body>
+</html>

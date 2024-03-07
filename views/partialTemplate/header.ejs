@@ -1,0 +1,177 @@
+<div class="body_overlay"></div>
+
+	<header data-format="<%=data.currency_format%>" data-currency="<%=data.currency%>">
+		<div class="menu_to_login">
+			<i class="fas menu_icon fa-bars"></i>
+
+			<p class="site_logo"><span> <i class="fa-solid fa-explosion"></i>Coil</span>Space</p>
+
+			<div class="start_wrapper">
+				<a class="start" href="/reg/direct">Get Started</a>
+			</div>
+		</div>
+
+
+		<%
+			const currencyFormatter = new Intl.NumberFormat(data.currency_format, {
+			    style: 'currency',
+			    currency: data.currency
+			});
+		%>
+
+		<div class="wallet_wrapper">
+			<p><i class="fa-solid fa-wallet"></i> Wallet Balance <span><%=currencyFormatter.format(data.wallet_balance)%></span></p>
+			<button onclick="window.location.href='/withdraw'">Withdraw</button>
+			<div></div>
+		</div>
+
+	</header>
+
+
+
+
+
+
+
+
+
+
+	<div class="menu_wrapper zIndex_for_menu">
+
+		<div class="menu_head">
+
+			<div class="profile_icon_wrapper">
+				<i class="fa-solid fa-explosion"></i>
+				<span class="edit_profile"><i class="fa-solid fa-pen-to-square"></i> Edit </span>
+			</div>
+
+
+
+			<p class="profile_name"><%=data.fName%> <%=data.lName%> <span><%=data.email%></span></p>
+
+		</div>
+		
+
+		<nav>
+			<ul>
+				<li class="main_page"><a><i class="fa-solid fa-briefcase"></i> Main Page </a></li>
+				<li><a><i class="fa-solid fa-clipboard"></i> Transaction History </a></li>
+				<li><a><i class="fa-solid fa-book"></i> How to Use</a></li>
+				<li><a><i class="fa-solid fa-gears"></i> Settings</a></li>
+				<li><a><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+				<li><a> Terms of Services</a></li>
+			</ul>
+		</nav>
+	</div>
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+		
+
+		
+
+
+
+
+		let html = document.querySelector("html");
+		let menuIcon = document.querySelector(".menu_icon");
+		let menu_wrapper = document.querySelector(".menu_wrapper");
+		const body_overlay = document.querySelector(".body_overlay");
+		menu_wrapper.style.width = "0";
+		menu_wrapper.style.opacity ="0";
+		menu_wrapper.style.zIndex = "-1";
+
+		menuIcon.addEventListener("click", ()=>{
+
+			body_overlay.addEventListener("click", ()=>{
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+				menu_wrapper.className = "close_menu menu_wrapper";
+				menu_wrapper.style.border ="none";
+			});
+
+			if(menu_wrapper.offsetWidth < 10){
+				menu_wrapper.style.zIndex = "5";
+				body_overlay.style.display = "block";
+				body_overlay.style.opacity = "0.7";
+				menu_wrapper.style.opacity ="100%";
+				menu_wrapper.className = "open_menu menu_wrapper";
+				menu_wrapper.style.borderRight ="1px solid rgb(80 80 80)";
+				menu_wrapper.style.borderBottom ="1px solid rgb(80 80 80)";
+
+				window.onscroll = function() {
+	  				body_overlay.style.opacity = "0";
+					body_overlay.style.display = "none";
+					menu_wrapper.className = "close_menu menu_wrapper";
+					menu_wrapper.style.border ="none";
+
+					setTimeout(()=>{
+						menu_wrapper.style.zIndex = "-1";
+					}, 220);
+
+				};
+
+			}else{
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+				menu_wrapper.className = "close_menu menu_wrapper";
+				menu_wrapper.style.border ="none";
+				
+				setTimeout(()=>{
+					menu_wrapper.style.zIndex = "-1";
+				}, 220);
+
+				window.onscroll = function(){//empty function to override the disabled scrolling
+				};
+			}
+		});
+
+
+
+	//Escape Key;
+		document.addEventListener('keydown', function(event){
+			if(event.key === "Escape"){
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+				menu_wrapper.className = "close_menu menu_wrapper";
+				menu_wrapper.style.border ="none";
+
+				setTimeout(()=>{
+					menu_wrapper.style.zIndex = "-1";
+				}, 220);
+
+				window.onscroll = function(){//empty function to override the disabled scrolling
+				};
+			}
+		});
+
+
+
+	//Clicking outside
+		html.addEventListener("click", ()=>{
+			if(menu_wrapper.offsetWidth > 10){
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+
+				setTimeout(()=>{
+					menu_wrapper.style.zIndex = "-1";
+				}, 220);
+				
+				window.onscroll = function(){//empty function to override the disabled scrolling
+				};
+
+				menu_wrapper.className = "close_menu menu_wrapper";
+			}
+		});
+
+
+	
+	</script>
