@@ -94,10 +94,9 @@
 		
 
 		<form>
+			<input class="input" step="any" placeholder="Enter Amount" type="number" name="amount" required>
+			<input class="input" placeholder="Enter Your Password" type="password" name="password" required>
 
-			<input step="any" placeholder="Enter Amount" type="number" name="amount" required>
-			
-			<input placeholder="Enter Your Password" type="password" name="password" required>
 			<button class="submit_button">Generate</button>
 		</form>
 
@@ -125,7 +124,8 @@
 		const alert_icon = document.querySelector(".alert_icon");
 		const alert_cancel = document.querySelector(".alert_cancel");
 		const alert_wrapper = document.querySelector(".alert_wrapper");
-		const submit_button = document.querySelector(".submit_button")
+		const submit_button = document.querySelector(".submit_button");
+		const inputs = document.querySelectorAll(".input");
 
 
 
@@ -164,14 +164,26 @@
 
 
 
-		let date = new Date().toLocaleString(header.dataset.format, {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: true,
-		});
+		function formatDate(date) {
+			const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+			// Get month, day, hours, and minutes
+			const month = months[date.getMonth()];
+			const day = date.getDate();
+			const hours = date.getHours();
+			const minutes = date.getMinutes();
+			  
+			// Convert hours to 12-hour format and determine AM/PM
+			const ampm = hours >= 12 ? 'PM' : 'AM';
+			const formattedHours = hours % 12 || 12; // Handle 0 hours
+			  
+			// Format the date
+			const formattedDate = month + ' ' + day + ' at ' + formattedHours + ':' + (minutes < 10 ? '0' : '') + minutes + ' ' + ampm;
+
+			return formattedDate
+		} 
+		const currentDate = new Date();
+
 
 
 
@@ -180,6 +192,11 @@
 
 		form.addEventListener("submit", async(e)=>{
 			e.preventDefault();
+
+
+			for(i=inputs.length - 1; i >=0; i--){
+				inputs[i].blur();
+			}
 
 
 			if(submit_button.disabled){
@@ -198,7 +215,7 @@
 						body: JSON.stringify({
 							amount: form.amount.value,
 							password: form.password.value,
-							date
+							date: formatDate(currentDate)
 						}),
 
 						headers: {"Content-Type": "application/json"}
@@ -259,6 +276,10 @@
 						display_alert();
 					}
 				}catch(error){
+
+					submit_button.disabled = false
+					submit_button.textContent = "Generate";
+					
 					console.log(error)
 					alert_icon.className = "alert_icon fa-regular fa-circle-check";
 					alert_p.textContent = error.message;

@@ -194,20 +194,34 @@
 
 
 
-		let date = new Date().toLocaleString(header.dataset.format, {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: true,
-		});
+		function formatDate(date) {
+			const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+			// Get month, day, hours, and minutes
+			const month = months[date.getMonth()];
+			const day = date.getDate();
+			const hours = date.getHours();
+			const minutes = date.getMinutes();
+			  
+			// Convert hours to 12-hour format and determine AM/PM
+			const ampm = hours >= 12 ? 'PM' : 'AM';
+			const formattedHours = hours % 12 || 12; // Handle 0 hours
+			  
+			// Format the date
+			const formattedDate = month + ' ' + day + ' at ' + formattedHours + ':' + (minutes < 10 ? '0' : '') + minutes + ' ' + ampm;
+
+			return formattedDate
+		} 
+		const currentDate = new Date();
+
 
 
 
 
 		form.addEventListener("submit", async(e)=>{
 			e.preventDefault();
+
+			form.coil_id.blur();
 
 			if(submit_button.disabled){
 			}else{
@@ -224,11 +238,12 @@
 
 						body: JSON.stringify({
 							coil_id: form.coil_id.value,
-							date
+							date: formatDate(currentDate)
 						})
 					});
 
 					const res = await result.json();
+
 					submit_button.disabled = false
 					submit_button.textContent = "Deposit";
 
@@ -272,7 +287,14 @@
 						display_alert();
 					}
 				}catch(error){
+					display_alert();
 					console.log(error);
+					submit_button.disabled = false
+					alert_cancel.textContent = "Okay";
+					alert_p.textContent = error.message
+					submit_button.textContent = "Deposit";
+					
+					
 				}
 			}
 		});

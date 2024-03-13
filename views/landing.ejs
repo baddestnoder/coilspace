@@ -21,35 +21,193 @@
 
 
 <body>
-	<%-include("./partialTemplate/header.ejs")%>
+	<div class="body_overlay"></div>
+
+
+	<header>
+		<div class="menu_to_login">
+			<i class="fas menu_icon fa-bars"></i>
+
+			<p class="site_logo"><span> <i class="fa-solid fa-explosion"></i>Coil</span>Space</p>
+
+			<div class="start_wrapper">
+				<a class="start" href="/reg/direct">Get Started</a>
+			</div>
+		</div>
+
+		
+	</header>
+
+
+
+
+
+
+
+
+
+
+	<div class="menu_wrapper zIndex_for_menu">
+
+		<div class="menu_head">
+
+			<div class="profile_icon_wrapper">
+				<i class="fa-solid fa-explosion"></i>
+				<span class="edit_profile"> </span>
+			</div>
+
+
+
+			<p onclick="window.location.href='/reg/direct'" class="profile_name">Sign Up</p>
+
+		</div>
+		
+
+		<nav>
+			<ul>
+				<li class="main_page"><a href="/landing"><i class="fa-solid fa-briefcase"></i> Main Page </a></li>
+				<li class="learn"><a href="/learn"><i class="fa-solid fa-book"></i> How to Use</a></li>
+				<li><a><i class="fa-solid fa-gears"></i> Settings</a></li>
+				<li><a><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+				<li><a> Terms of Services</a></li>
+			</ul>
+		</nav>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+		let html = document.querySelector("html");
+		let menuIcon = document.querySelector(".menu_icon");
+		let menu_wrapper = document.querySelector(".menu_wrapper");
+		const body_overlay = document.querySelector(".body_overlay");
+		menu_wrapper.style.width = "0";
+		menu_wrapper.style.opacity ="0";
+		menu_wrapper.style.zIndex = "-1";
+
+		menuIcon.addEventListener("click", ()=>{
+
+			body_overlay.addEventListener("click", ()=>{
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+				menu_wrapper.className = "close_menu menu_wrapper";
+				menu_wrapper.style.border ="none";
+			});
+
+			if(menu_wrapper.offsetWidth < 10){
+				menu_wrapper.style.zIndex = "5";
+				body_overlay.style.display = "block";
+				body_overlay.style.opacity = "0.7";
+				menu_wrapper.style.opacity ="100%";
+				menu_wrapper.className = "open_menu menu_wrapper";
+				menu_wrapper.style.borderRight ="1px solid rgb(80 80 80)";
+				menu_wrapper.style.borderBottom ="1px solid rgb(80 80 80)";
+
+				window.onscroll = function() {
+	  				body_overlay.style.opacity = "0";
+					body_overlay.style.display = "none";
+					menu_wrapper.className = "close_menu menu_wrapper";
+					menu_wrapper.style.border ="none";
+
+					setTimeout(()=>{
+						menu_wrapper.style.zIndex = "-1";
+					}, 220);
+
+				};
+
+			}else{
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+				menu_wrapper.className = "close_menu menu_wrapper";
+				menu_wrapper.style.border ="none";
+				
+				setTimeout(()=>{
+					menu_wrapper.style.zIndex = "-1";
+				}, 220);
+
+				window.onscroll = function(){//empty function to override the disabled scrolling
+				};
+			}
+		});
+
+
+
+	//Escape Key;
+		document.addEventListener('keydown', function(event){
+			if(event.key === "Escape"){
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+				menu_wrapper.className = "close_menu menu_wrapper";
+				menu_wrapper.style.border ="none";
+
+				setTimeout(()=>{
+					menu_wrapper.style.zIndex = "-1";
+				}, 220);
+
+				window.onscroll = function(){//empty function to override the disabled scrolling
+				};
+			}
+		});
+
+
+
+	//Clicking outside
+		html.addEventListener("click", ()=>{
+			if(menu_wrapper.offsetWidth > 10){
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+
+				setTimeout(()=>{
+					menu_wrapper.style.zIndex = "-1";
+				}, 220);
+				
+				window.onscroll = function(){//empty function to override the disabled scrolling
+				};
+
+				menu_wrapper.className = "close_menu menu_wrapper";
+			}
+		});
+
 
 	
-
-
-
-
-
+	</script>
 
 
 
 	<main role="main">
 
+		<article>
+			<i class="fa-solid fa-question"></i>
+			<h2>What is CoilSpace?</h2>
+			<p>CoilSpace is an investment platform that offer users the opportunity to acquire and store a valuable digital asset known as "Coil".</p>
+		</article>
 
-		<section>
-			<i class="far fa-question-circle"></i>
-			<h1>What is CoilSpace?</h1>
-			<p>CoilSpace is an investment platform that offer users the opportunity to acquire and store a valuable digital asset known as "Coil"...</p>
-			<a href="">Read more</a>
-		</section>
 
-		<a class="big_start" href="">Get Started</a>
+
+		<article>
+			<i class="fa-solid fa-explosion"></i>
+			<h2>What is Coil?</h2>
+			<p>Coil is a digital asset that perpetually appreciates; its value increases over time based on the duration of investment. Unlike cryptocurrency, it is not subject to volatility but instead employs an irreducible algorithm designed to alleviate anxieties and provide a sense of stability among traders.</p>
+		</article>
+
+
+		<article>
+			<i class="fa-solid fa-arrow-right"></i>
+			<h2>What Next?</h2>
+			<p>Though investing on CoilSpace is made easy, we recommend learning more about Coil. Our platform offers various tutorials, including YouTube videos, to help you understand Coil better. You can start by signing up today.</p>
+
+			<a class="big_start" href="/reg/direct">Get Started</a>
+		</article>
 	</main>
-
-
-
-
-
-
 
 </body>
 </html>

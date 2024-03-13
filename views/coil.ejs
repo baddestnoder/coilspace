@@ -9,12 +9,6 @@
 		
 		@media screen and (min-width: 200px){
 
-			main{
-				background-color: rgb(10, 15, 30);
-			}
-
-
-
 
 
 			.body_overlay{
@@ -29,13 +23,25 @@
 
 
 
-
 			main{
+				background-color: rgb(0, 0, 0);
 				padding-top: 50px;
 				padding-bottom: 130px;
 			}
 
+
+			.fa-star-of-life{
+				font-size: 0;
+				color: white;
+				position: absolute;
+				z-index: 1;
+			}
+
 			.coil_section{
+				animation: change_shadow 2500ms infinite;
+				animation-direction: alternate;
+				position: relative;
+				z-index: 2;
 				width: 170px;
 				height: 170px;
 				border-radius: 50%;
@@ -43,9 +49,24 @@
 				margin: 30px auto 0 auto;
 				border-bottom: 2px solid rgb(50, 0, 40);
 				border-top: 2px solid rgb(0, 255, 100);
-				box-shadow: 0 0 30px 5px rgb(100, 230, 240);
+				
 				background-image: linear-gradient(1deg, rgb(60, 0, 50)30%, rgb(0, 230, 70)100%);
 			}
+
+
+			@keyframes change_shadow{
+				0%{
+					animation-timing-function: ease-in;
+					box-shadow: 0 0 10px 1.5px rgb(100, 230, 240);
+				}
+
+				100%{
+					animation-timing-function: ease-out;
+					box-shadow: 0 0 30px 5px rgb(100, 230, 240);
+				}
+			}
+
+
 
 
 			main i{
@@ -87,12 +108,14 @@
 
 
 			.detail_section{
+				position: relative;
+				z-index: 2;
 				width: 90%;
 				margin: 50px auto 0 auto;
 				display: grid;
 				grid-template-columns: 1fr 1fr;
 				background-color: rgb(0, 30, 70);
-				padding: 30px 0 10px 0;
+				padding: 30px 5px 10px 5px;
 				border-radius: 0 0 20px 20px;
 			}
 
@@ -109,11 +132,15 @@
 			}
 
 			.detail_section p span{
+				display: block;
+				margin-top: 3px;
 				color: white;
 			}
 
 
 			.withdraw{
+				position: relative;
+				z-index: 2;
 				display: block;
 				width: 70%;
 				margin: 40px auto 0 auto;
@@ -166,6 +193,8 @@
 				border: 1px solid rgb(50, 50, 50);
 				padding: 0 0 0 15px;
 			}
+
+			
 
 
 			main form div{
@@ -224,7 +253,7 @@
 
 
 			.detail_section{
-				width: 80%;
+				width: 85%;
 			}
 
 
@@ -271,7 +300,7 @@
 
 
 
-<body data-currency="<%=data.currency%>" data-currency_format="<%=data.format%>">
+<body data-currency="<%=data.currency%>" data-format="<%=data.currency_format%>">
 
 	<div class="body_overlay"></div>
 
@@ -284,6 +313,10 @@
 	%>
 
 	<main>
+
+		<%for(i=150; i>0; i--){%>
+			<i class="fa-solid fa-star-of-life"></i>
+		<%}%>
 		
 		<section class="coil_section">
 			<i class="fa-solid fa-arrow-up-right-dots"></i>
@@ -296,7 +329,7 @@
 		
 		<div class="detail_section">
 			<p>Invested Amount <br> <span><%=currencyFormatter.format(isMyCoil.invested_amount)%></span></p>
-			<p>Date <br> <span>23/2/2023</span> </p>
+			<p>Date <br> <span><%=isMyCoil.date%></span> </p>
 		</div>
 
 		<button data-coil_id="<%=isMyCoil.coil_id%>" class="withdraw">Withdraw to Wallet</button>
@@ -349,6 +382,20 @@
 		const alert_icon = document.querySelector(".alert_icon");
 		const alert_cancel = document.querySelector(".alert_cancel");
 		const alert_wrapper = document.querySelector(".alert_wrapper");
+		const stars = document.querySelectorAll(".fa-star-of-life");
+
+
+		stars.forEach((each)=>{
+			const stars_font_size = (Math.random()*(0.2 - 0.02)) + 0.02;
+			const position_top = Math.floor(Math.random()*100);
+			const position_left = Math.floor(Math.random()*100);
+
+			each.style.fontSize = `${stars_font_size}rem`;
+			each.style.left = `${position_left}%`;
+			each.style.top = `${position_top}%`;
+		});
+
+		
 
 
 
@@ -396,14 +443,27 @@
 
 
 
-		let date = new Date().toLocaleString(body.dataset.format, {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: true,
-		});
+
+		function formatDate(date) {
+			const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+			// Get month, day, hours, and minutes
+			const month = months[date.getMonth()];
+			const day = date.getDate();
+			const hours = date.getHours();
+			const minutes = date.getMinutes();
+			  
+			// Convert hours to 12-hour format and determine AM/PM
+			const ampm = hours >= 12 ? 'PM' : 'AM';
+			const formattedHours = hours % 12 || 12; // Handle 0 hours
+			  
+			// Format the date
+			const formattedDate = month + ' ' + day + ' at ' + formattedHours + ':' + (minutes < 10 ? '0' : '') + minutes + ' ' + ampm;
+
+			return formattedDate
+		} 
+		const currentDate = new Date();
+
 
 
 
@@ -429,12 +489,9 @@
 				body_overlay.style.display = "none";
 				form.style.zIndex = "-1";
 
-
 				if(withdraw_button.disabled){
 
 				}else{
-
-
 					try{
 						withdraw_button.disabled = true;
 						withdraw_button.textContent = "Loading..."
@@ -444,7 +501,7 @@
 							body: JSON.stringify({
 								coil_id: withdraw_button.dataset.coil_id,
 								password: form.password.value,
-								date
+								date: formatDate(currentDate)
 							}),
 							headers: {"Content-Type": "application/json"},
 							method: "POST"
@@ -452,13 +509,14 @@
 
 
 						const res = await result.json();
+						
 						withdraw_button.disabled = false
 						withdraw_button.textContent = "Withdraw to Wallet"
 
 
 						if(res.message === "successful"){
 							alert_icon.className = "alert_icon fa-regular fa-circle-check";
-							alert_p.textContent = currencyFormatter.format(res.cashout_amount)+ " has been successfully added to your wallet.";
+							alert_p.textContent = `${currencyFormatter.format(res.cashout_amount)} has been successfully added to your wallet.`;
 
 							display_alert()
 
@@ -491,10 +549,11 @@
 						}
 
 					}catch(error){
-						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
-						alert_p.textContent = error.message;
-
 						display_alert();
+						withdraw_button.disabled = false
+						alert_p.textContent = error.message;
+						withdraw_button.textContent = "Withdraw to Wallet"
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";	
 					};
 				}
 			};

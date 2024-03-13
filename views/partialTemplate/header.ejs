@@ -1,5 +1,6 @@
 <div class="body_overlay"></div>
 
+
 	<header data-format="<%=data.currency_format%>" data-currency="<%=data.currency%>">
 		<div class="menu_to_login">
 			<i class="fas menu_icon fa-bars"></i>
@@ -7,10 +8,9 @@
 			<p class="site_logo"><span> <i class="fa-solid fa-explosion"></i>Coil</span>Space</p>
 
 			<div class="start_wrapper">
-				<a class="start" href="/reg/direct">Get Started</a>
+				<a class="start" style="border: none; color: rgb(60, 60, 60)"><b>Hi, <%=data.fName%></b></a>
 			</div>
 		</div>
-
 
 		<%
 			const currencyFormatter = new Intl.NumberFormat(data.currency_format, {
@@ -55,8 +55,8 @@
 		<nav>
 			<ul>
 				<li class="main_page"><a><i class="fa-solid fa-briefcase"></i> Main Page </a></li>
-				<li><a><i class="fa-solid fa-clipboard"></i> Transaction History </a></li>
-				<li><a><i class="fa-solid fa-book"></i> How to Use</a></li>
+				<li class="history"><a><i class="fa-solid fa-clipboard"></i>History </a></li>
+				<li><a href="/learn"><i class="fa-solid fa-book"></i> How to Use</a></li>
 				<li><a><i class="fa-solid fa-gears"></i> Settings</a></li>
 				<li><a><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
 				<li><a> Terms of Services</a></li>
@@ -74,12 +74,6 @@
 
 
 <script type="text/javascript">
-		
-
-		
-
-
-
 
 		let html = document.querySelector("html");
 		let menuIcon = document.querySelector(".menu_icon");

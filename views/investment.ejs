@@ -22,13 +22,12 @@
 
 			h1{
 				color: rgb(50, 50, 50);
-				margin-bottom: 10px;
 			}
 
 
 
 			main p{
-				margin-top: 10px;
+				margin-top: 3px;
 			}
 
 
@@ -38,22 +37,25 @@
 
 
 			input{
-				display: inline-block;
+				display: block;
 				height: 29px;
 				border: 1px solid rgb(70, 70, 70);
-				border-radius: 5px 0 0 5px;
+				border-radius: 5px;
 				padding-left: 10px;
-				width: 60%;
+				width: 80%;
 				font-size: 1rem;
 			}
 
 
 			form button{
 				font-size: 1rem;
-				display: inline-block;
-				padding: 9px 8px;
-				border-radius: 0 5px 5px 0;
-				background-color: rgb(40, 170, 100);
+				width: 30%;
+				display: block;
+				margin-top: 10px;
+				padding: 9px 4px;
+				border-radius: 5px;
+				background-color: rgb(40, 130, 100);
+				color: white;
 				border: 1px solid rgb(0, 100, 50);
 			}
 
@@ -133,7 +135,7 @@
 
 
 		
-		<p class="purchase_statement" style="font-style: italic;">Click here to purchase Coil if you have not.</p>
+		<p class="purchase_statement" style="font-style: italic;"><a style="color: blue;" href="/buy_coil">Click here</a> to purchase Coil if you have not.</p>
 
 
 	</main>
@@ -186,14 +188,26 @@
 
 
 
-		let date = new Date().toLocaleString(header.dataset.format, {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: true,
-		});
+		function formatDate(date) {
+			const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+			// Get month, day, hours, and minutes
+			const month = months[date.getMonth()];
+			const day = date.getDate();
+			const hours = date.getHours();
+			const minutes = date.getMinutes();
+			  
+			// Convert hours to 12-hour format and determine AM/PM
+			const ampm = hours >= 12 ? 'PM' : 'AM';
+			const formattedHours = hours % 12 || 12; // Handle 0 hours
+			  
+			// Format the date
+			const formattedDate = month + ' ' + day + ' at ' + formattedHours + ':' + (minutes < 10 ? '0' : '') + minutes + ' ' + ampm;
+
+			return formattedDate
+		} 
+		const currentDate = new Date();
+
 
 
 
@@ -205,6 +219,7 @@
 		form.addEventListener("submit", async(e)=>{
 			e.preventDefault();
 
+			form.coil_id.blur();
 
 			if(submit_button.disabled){
 			}else{
@@ -219,7 +234,7 @@
 
 						body: JSON.stringify({
 							coil_id: form.coil_id.value,
-							date
+							date: formatDate(currentDate)
 						}),
 
 						headers: {"Content-Type": "application/json"}
@@ -227,6 +242,7 @@
 
 
 					const res = await result.json();
+
 					submit_button.disabled = false
 					submit_button.textContent = "Invest";
 					
@@ -274,10 +290,13 @@
 					}
 					
 				}catch(error){
-					alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
-					alert_p.textContent = error.message;
+					submit_button.disabled = false
+					submit_button.textContent = "Invest";
 
 					display_alert();
+					console.log(error)
+					alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+					alert_p.textContent = error.message;
 				}
 			}
 		});

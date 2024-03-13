@@ -182,6 +182,7 @@
 
 
 				const res = await result.json();
+
 				submit_button.disabled = false
 				submit_button.textContent = "Update";
 
@@ -196,6 +197,8 @@
 				}
 
 			}catch(error){
+				submit_button.disabled = false
+				submit_button.textContent = "Update";
 				alert(error.message);
 			}
 		});

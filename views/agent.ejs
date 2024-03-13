@@ -177,9 +177,9 @@
 
 		<form>
 			<label for="whatsapp_link">WhatsApp Link</label>
-			<input required placeholder="Paste Your WhatsApp Link" type="text" name="whatsapp_link">
+			<input class="input" required placeholder="Paste Your WhatsApp Link" type="text" name="whatsapp_link">
 			<label for="whatsapp_number">WhatsApp Number</label>
-			<input required placeholder="Enter Your WhatsApp Number" type="phone" name="whatsapp_number">
+			<input class="input" required placeholder="Enter Your WhatsApp Number" type="phone" name="whatsapp_number">
 			<button class="submit_button">Apply</button>
 		</form>
 
@@ -212,7 +212,7 @@
 		const alert_icon = document.querySelector(".alert_icon");
 		const alert_cancel = document.querySelector(".alert_cancel");
 		const alert_wrapper = document.querySelector(".alert_wrapper");
-
+		const inputs = document.querySelectorAll(".input");
 
 
 
@@ -244,6 +244,11 @@
 		form.addEventListener("submit", async(e)=>{
 			e.preventDefault();
 
+			
+			for(i=inputs.length - 1; i >=0; i--){
+				inputs[i].blur();
+			}
+
 			alert_icon.className = "alert_icon alert_icon fa-solid fa-circle-exclamation";
 
 			if(submit_button.disabled){
@@ -266,6 +271,7 @@
 					});
 
 					const res = await result.json();
+
 					submit_button.disabled = false
 					submit_button.textContent = "Apply";
 
@@ -296,6 +302,9 @@
 						alert_p.textContent = res.message;
 					}
 				}catch(error){
+					submit_button.disabled = false
+					submit_button.textContent = "Apply";
+					
 					console.log(error);
 					display_alert();
 					alert_p.textContent = error.message

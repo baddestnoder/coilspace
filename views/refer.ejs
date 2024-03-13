@@ -119,13 +119,13 @@
 
 			form{
 				margin-top: 20px;
-				width: 90%;
+				width: 100%;
 				border: 1px solid white;
 				border-radius: 15px;
 				display: grid;
-				grid-template-columns: 5fr 2fr;
+				grid-template-columns: 6fr 2fr;
 				padding: 3px;
-				background-color: rgb(190, 190, 190);
+				background-color: rgb(210, 210, 210);
 			}
 
 			form input{
@@ -196,7 +196,7 @@
 			.history_wrapper article{
 				line-height: 1.6;
 				padding: 20px 0;
-				border-bottom: 1px solid rgb(210, 210, 210);
+				border-bottom: 1px solid rgb(230, 230, 230);
 				display: grid;
 				grid-template-columns: 65px 1fr;
 			}
@@ -300,7 +300,7 @@
 
 			<form>
 				<input type="text" name="referral_link" value="https//:coilspace.com/reg/<%=data.index%>">
-				<button>Copy</button>
+				<button class="copy_button">Copy</button>
 			</form>
 		</div>
 
@@ -394,6 +394,13 @@
 		const header = document.querySelector("header");
 		const alert_cancel = document.querySelector(".alert_cancel");
 		const alert_icon = document.querySelector(".alert_icon");
+		const form = document.querySelector("form");
+		const copy_button = document.querySelector(".copy_button");
+
+
+		form.addEventListener("submit", (e)=>{
+			e.preventDefault();
+		})
 
 
 
@@ -451,6 +458,24 @@
 
 
 
+		copy_button.addEventListener("click", ()=>{
+
+		    form.referral_link.select();
+
+		    document.execCommand("copy");
+
+		    copy_button.innerHTML = "<i class='fa-solid fa-check'></i>"
+
+		    setTimeout(()=>{
+		    	copy_button.innerHTML = "Copy";
+		    }, 800);
+
+		    document.body.removeChild(textarea);
+		});
+
+
+
+
 
 
 
@@ -460,37 +485,46 @@
 
 
 		withdraw_button.addEventListener("click", async()=>{
-			withdraw_button.disabled = true;
-			withdraw_button.textContent = "Loading..."
+			
 			alert_icon.className = "alert_icon alert_icon fa-solid fa-circle-exclamation";
 
-			try{
+			if(withdraw_button.disabled){
+			}else{
 
-				const result = await fetch("/withdraw_referral", {
-					method: "POST",
-					headers: {"Content-Type": "application/json"},
+				withdraw_button.disabled = true;
+				withdraw_button.textContent = "Loading...";
 
-					body: JSON.stringify({
-						date: formatDate(currentDate),
-					})
-				});
+				try{
 
-				const res = await result.json();
+					const result = await fetch("/withdraw_referral", {
+						method: "POST",
+						headers: {"Content-Type": "application/json"},
 
-				if(res.message){
+						body: JSON.stringify({
+							date: formatDate(currentDate),
+						})
+					});
+
+					const res = await result.json();
+
+					withdraw_button.disabled = false
+					withdraw_button.textContent = "Withdraw";
+
+					if(res.message){
+						display_alert();
+						alert_p.textContent = res.message;
+					}else{
+						alert_icon.className = "alert_icon fa-regular fa-circle-check";
+						display_alert();
+						alert_p.textContent = `${currencyFormatter.format(res.deducted)} has been deposited to your wallet.`;
+					}
+				}catch(error){
 					display_alert();
-					alert_p.textContent = res.message;
-				}else{
-					alert_icon.className = "alert_icon fa-regular fa-circle-check";
-					display_alert();
-					alert_p.textContent = `${currencyFormatter.format(res.deducted)} has been deposited to your wallet.`;
+					console.log(error);
+					alert_p.textContent = error.message;
+					withdraw_button.disabled = false
+					withdraw_button.textContent = "Withdraw";
 				}
-
-				withdraw_button.disabled = false;
-				withdraw_button.textContent = "Withdraw"
-			}catch(error){
-				console.log(error)
-				alert(error.message);
 			}
 		});
 

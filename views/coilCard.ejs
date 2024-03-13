@@ -12,6 +12,7 @@
 
 
 
+
 			div.menu_to_login{
 				background-color: rgb(230, 250, 255);
 			}
@@ -21,24 +22,24 @@
 				display: none;
 			}
 
+
 			main{
-				padding: 0 5% 150px 5%;
+				padding-bottom: 160px;
+				position: relative;
+				background-color: white;
+				width: 100%;
 				border-top: 1px solid rgb(200, 200, 200);
-				margin: 5px auto 0 auto;
+				margin: 5px 0 0 0;
 			}
 
 
-			h1{
-				font-size: 1.7rem;
-				margin-top: 70px;
-				color: rgb(0, 140, 20);
-			}
 
 
 			.card_section{
+				width: 85%;
 				box-sizing: border-box;
 				position: relative;
-				margin-top: 15px;
+				margin: 70px auto 0 auto;
 				background-image: linear-gradient(100deg, rgb(0, 0, 10)30%, rgb(80, 90, 100)100%);
 				padding: 10px;
 				border-radius: 6px;
@@ -112,32 +113,28 @@
 
 
 			.card_number{
+				font-size: 0.85rem;
+				display: block;
+				font-family: 'Varela Round', sans-serif;
+				position: relative;
 				color: rgb(230, 230, 230);
-				padding: 3px 7px;
+				padding: 5px 7px;
 				border-radius: 5px;
 				background-image: linear-gradient(100deg, rgb(80, 90, 100)30%, rgb(0, 0, 10)100%);
 			}
 
-			.unit{
+			.copy_button{
 				color: rgb(190, 190, 190);
 				position: absolute;
-				bottom: 13px;
-				right: 15px;
-			}
-
-
-
-			.description{
-				color: rgb(50, 50, 50);
-				margin-top: 40px;
-				font-size: 1.05rem;
-				line-height: 1.3;
-			}
-
-
-			.secure{
-				color: rgb(220, 30, 30);
-				margin-top: 0;
+				right: 5px;
+				bottom: 5px;
+				border: 1px solid rgb(150, 150, 150);
+				color: white;
+				background-color: transparent;
+				padding: 1px 5px;
+				border-radius: 5px;
+				font-size: 0.8rem;
+				display: inline-block;
 			}
 
 
@@ -147,38 +144,213 @@
 
 
 
-			.get_dealer_p{
-				margin-top: 50px;
-				font-size: 1.1rem;
+			.what_next_wrapper{
+				background-color: white;
+			}
+
+			.what_next_wrapper h2{
+				font-weight: 400;
+				width: 70%;
+				font-family: 'Varela Round', sans-serif;
 				text-align: center;
+				margin: 60px auto 0 auto;
+				text-align: center;
+				color: rgb(140, 140, 140);
+				font-size: 1.1rem;
+			}
+
+
+
+			.what_next_wrapper div{
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				text-align: center;
+			}
+
+
+
+			.what_next_wrapper p{
+				font-weight: 600;
+				margin-top: 30px;
+			}
+
+
+
+
+			.what_next_wrapper i{
+				display: block;
+				font-size: 1.6rem;
+				margin-bottom: 25px;
+			}
+
+
+			.what_next_wrapper i::before{
+				padding: 13px;
+				border-radius: 50%;
+				color: white;
+				background-color: rgb(230, 100, 0);
+			}
+
+			.what_next_wrapper div p+p i::before{
+				background-color: rgb(35, 150, 25);
+			}
+
+
+
+			.rotate_invest_icon{
+				animation: rotate 700ms linear infinite;
+				transform: rotate(360deg);
+
+			}
+
+			@keyframes rotate{
+				0%{
+					transform: rotate(0deg);
+				}
+
+
+				100%{
+					transform: rotate(360deg);
+				}
+			}
+
+
+
+
+
+
+			main form{
+				background-color: white;
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				z-index: -1;
+				padding: 30px 40px 60px 40px;
+				box-sizing: border-box;
+				border-radius: 20px 20px 0 0;
+			}
+
+
+
+
+			main form h2{
+				color: rgb(60, 60, 60);
+				font-size: 1.7rem;
+				text-align: center;
+			}
+
+			main form p{
+				margin-top: 20px;
+				font-size: 1.1rem;
+				text-align: left;
+				line-height: 1.7;
 				color: black;
 			}
 
 
-
-			.get_dealer_button{
-				width: 70%;
+			main form input{
+				box-sizing: border-box;
+				margin: 30px auto 0 auto;
 				display: block;
-				margin: 8px auto 0 auto;
-				font-size: 1rem;
-				background-color: rgb(0, 130, 90);
+				width: 100%;
+				height: 50px;
+				border-radius: 8px;
+				border: 1px solid rgb(50, 50, 50);
+				padding: 0 0 0 15px;
+			}
+
+
+			main form div{
+				width: 100%;
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+			}
+
+
+			main form button{
+				margin: 30px 0 0 0;
+				display: block;
+				background-color: rgb(150, 0, 0);
 				color: white;
-				padding: 7px 0;
+				padding: 15px 0;
 				border: none;
-				border-radius: 5px;
+				border-radius: 6px;
+				width: 80%;
+			}
+
+
+			main form div button+button{
+				background-color: rgb(0, 100, 50);
+				margin-left: auto;
 			}
 
 
 
-			
+
+
+
+
+
+
+
+
+
+
+
+
+			.redirect_wrapper{
+				display: none;
+				background-color: white;
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				z-index: 4;
+				padding: 30px 40px 60px 40px;
+				box-sizing: border-box;
+				border-radius: 20px 20px 0 0;
+			}
+
+
+
+			.redirect_wrapper h2{
+				color: rgb(60, 60, 60);
+				text-align: center;
+			}
+
+			.redirect_wrapper p{
+				margin-top: 20px;
+				font-size: 1.1rem;
+				text-align: center;
+				line-height: 1.4;
+				color: black;
+			}
+
+
+			.redirect_wrapper div{
+				width: 100%;
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+			}
+
+
+			.redirect_wrapper button{
+				margin: 30px 0 0 0;
+				display: block;
+				background-color: rgb(150, 0, 0);
+				color: white;
+				padding: 15px 0;
+				border: none;
+				border-radius: 6px;
+				width: 80%;
+			}
+
+
+			.redirect_wrapper div button+button{
+				background-color: rgb(0, 100, 50);
+				margin-left: auto;
+			}
+
 		}
-
-
-
-
-
-
-
 
 
 
@@ -217,10 +389,6 @@
 
 		@media screen and (min-width: 300px){
 
-			main{
-				width: 85%;
-			}
-
 
 			.card_section{
 				padding: 15px 18px 15px 15px;
@@ -242,11 +410,6 @@
 
 
 
-			.get_dealer_button{
-				width: 60%;
-				padding: 10px 0;
-			}
-
 		}
 
 
@@ -261,6 +424,7 @@
 				width: 53px;
 				height: 53px;
 			}
+
 		}
 
 	</style>
@@ -296,35 +460,388 @@
 
 
 	<main>
-
-		<h1>Generated<br>Successfully</h1>
 		
 		<section class="card_section">
 			<div>
 					<h2><span> Coil</span>Card</h2>
-					<p>Agent's Rate <br> <span><%=currencyFormatter.format(coil.price)%></span></p>
+					<p>Amount <br> <span><%=currencyFormatter.format(coil.price)%></span></p>
 			</div>
 			<p class="name"><%=data.fName%> <%=data.lName%> <i class="fa-regular fa-circle-check"></i></p>
 			<i class="big_logo fa-solid fa-explosion"></i>
-			<p class="card_number"><%=coil.coil_id%></p>
-			<p class="unit">12/04/2023</p>
+			<card_number class="card_number"><%=coil.coil_id%> <button class="copy_button">Copy</button></card_number>
 		</section>
 
 
-		<p class="description">5 Units Coil has been generated... You can either copy the card number and sell it to any Coil Dealer, or invest it on the platform, you can also share it as gift to your love ones...</p>
-		<br>
+		<section class="what_next_wrapper">
+			<h2>Your Coil has been generated successfully, what next?</h2>
 
-		<p class="description secure"><i>Remember to keep card numbers safe from other people... If you need tips on how to identify trusted Coil Dealers, <a href="">Click Here</a>.</i></p>
+			<div>
+
+				<%if(buyer_whatsapp){%>
+					<p class="sell"><i class="fa-regular fa-paper-plane"></i> Sell the Coil</p>
+
+					<p class="invest"> <i class="fa-solid fa-chart-line"></i> Invest the Coil</p>
+				<%}else{%>
+					<p onclick="window.location.href='/buy_coil'"><i class="fa-regular fa-paper-plane"></i> Sell the Coil</p>
+
+					<p class="invest"> <i class="fa-solid fa-chart-line"></i> Invest the Coil</p>
+				<%}%>
+				
+			</div>
+		</section>
 
 
 
-		<p class="get_dealer_p">You don't have a Coil Dealer?</p>
-		<button class="get_dealer_button">Get a Dealer</button>
+		<form>
 
+			<h2>Invest Coil</h2>
+			<p>By clicking "Continue", you have agreed to invest this coil.</p>
+
+			<input type="text" name="coil_id" value="<%=coil.coil_id%>">
+
+			<div>
+				<button class="form_cancel">Cancel</button>
+				<button class="continue">Continue</button>
+			</div>
+		</form>
+
+
+
+		<section style="display: none;" class="alert_wrapper">
+			<i class="alert_icon fa-solid fa-circle-exclamation"></i>
+			<p class="alert_p"></p>
+			<button class="alert_cancel">Okay</button>
+		</section>
+
+
+
+
+		<section class="redirect_wrapper">
+
+			<h2>Notice!</h2>
+			<p>We are about to redirect you to a trusted Coil Dealer on WhatsApp.</p>
+
+			<div>
+				<button class="redirect_cancel">Cancel</button>
+				<button class="redirect_continue">Continue</button>
+			</div>
+		</section>
 	</main>
 
 
 	<%-include("./partialTemplate/footer.ejs")%>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+
+
+
+		const form_cancel = document.querySelector(".form_cancel");
+		const invest = document.querySelector(".invest");
+		const continue_button = document.querySelector(".continue");
+		const form = document.querySelector("form");
+		const alert_p = document.querySelector(".alert_p");
+		const alert_icon = document.querySelector(".alert_icon");
+		const alert_cancel = document.querySelector(".alert_cancel");
+		const alert_wrapper = document.querySelector(".alert_wrapper");
+		const copy_button = document.querySelector(".copy_button");
+		const invest_icon = document.querySelector(".fa-chart-line");
+		const redirect_wrapper = document.querySelector(".redirect_wrapper");
+		const sell = document.querySelector(".sell");
+		const redirect_cancel = document.querySelector(".redirect_cancel");
+		const redirect_continue = document.querySelector(".redirect_continue");
+
+
+
+
+		const display_alert = ()=>{
+			body_overlay.style.display = "block";
+			body_overlay.style.opacity = "0.8";
+			alert_wrapper.style.display = "block";
+
+			const scrollY = window.scrollY || window.pageYOffset;
+		  	const topPosition = 100+scrollY + 'px';
+		    alert_wrapper.style.top = topPosition;
+		}
+
+
+
+
+
+		const closs_alert = ()=>{
+			body_overlay.style.opacity = "0";
+			body_overlay.style.display = "none";
+			alert_wrapper.style.display = "none";
+		}
+
+
+
+		if(sell){
+			sell.addEventListener("click", ()=>{
+				redirect_wrapper.style.display = "block";
+				body_overlay.style.display = "block";
+				body_overlay.style.opacity = "0.8";
+			});	
+		}
+
+		
+
+
+		
+		redirect_continue.addEventListener("click", ()=>{
+			if("<%=buyer_whatsapp%>"){
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+				alert_wrapper.style.display = "none";
+				window.location.href="<%=buyer_whatsapp%>";
+				redirect_wrapper.style.display = "none";
+			}
+		});
+		
+
+
+		redirect_cancel.addEventListener("click", ()=>{
+			redirect_wrapper.style.display = "none";
+			body_overlay.style.display = "none";
+			body_overlay.style.opacity = "0";
+		});
+
+
+
+
+		invest.addEventListener("click", async()=>{
+			form.coil_id.required = true;
+			form.style.zIndex = "4";
+			form.style.opacity = "1";
+			body_overlay.style.opacity = "0.7";
+			body_overlay.style.display = "block";
+		});
+
+
+
+
+
+		form.addEventListener("submit", (e)=>{
+			form.coil_id.blur();
+			e.preventDefault();
+		});
+
+
+
+
+
+		copy_button.addEventListener("click", ()=>{
+		  
+		    const textarea = document.createElement("textarea");
+
+		    textarea.value = "<%=coil.coil_id%>";
+		    textarea.style.left = "-9999px";
+		    textarea.style.position = "fixed";
+		    
+		    document.body.appendChild(textarea);
+
+		    textarea.select();
+
+		    document.execCommand("copy");
+
+		    copy_button.innerHTML = "<i class='fa-solid fa-check'></i>"
+
+		    setTimeout(()=>{
+		    	copy_button.innerHTML = "Copy";
+		    }, 800);
+
+		    document.body.removeChild(textarea);
+		});
+
+
+
+
+		function formatDate(date) {
+			const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+			// Get month, day, hours, and minutes
+			const month = months[date.getMonth()];
+			const day = date.getDate();
+			const hours = date.getHours();
+			const minutes = date.getMinutes();
+			  
+			// Convert hours to 12-hour format and determine AM/PM
+			const ampm = hours >= 12 ? 'PM' : 'AM';
+			const formattedHours = hours % 12 || 12; // Handle 0 hours
+			  
+			// Format the date
+			const formattedDate = month + ' ' + day + ' at ' + formattedHours + ':' + (minutes < 10 ? '0' : '') + minutes + ' ' + ampm;
+
+			return formattedDate
+		} 
+		const currentDate = new Date();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		continue_button.addEventListener("click", async(e)=>{
+
+			body_overlay.style.opacity = "0";
+			body_overlay.style.display = "none";
+			form.style.zIndex = "-1";
+
+			if(continue_button.disabled){
+			}else{
+
+
+				invest_icon.className = "fa-solid fa-chart-line rotate_invest_icon";
+
+				continue_button.disabled = true
+				continue_button.textContent = "Loading...";
+
+				try{
+
+					const result = await fetch("/investment/deposit", {
+						method: "POST",
+
+						body: JSON.stringify({
+							coil_id: form.coil_id.value,
+							date: formatDate(currentDate)
+						}),
+
+						headers: {"Content-Type": "application/json"}
+					});
+
+
+					const res = await result.json();
+
+					invest_icon.className = "fa-solid fa-chart-line";
+					continue_button.disabled = false
+					continue_button.textContent = "Invest";
+					
+					if(res.message.includes("already been used")){
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = res.message;
+
+						display_alert();
+					}else if(res.message === "successful"){
+						alert_icon.className = "alert_icon fa-regular fa-circle-check";
+						alert_p.textContent = "Your investment was successful... It's time to watch it gow.";
+
+						display_alert();
+
+						alert_cancel.addEventListener("click", ()=>{
+							window.location.href = "/main#"+res.coil_id
+						});
+
+						setTimeout(()=>{
+							window.location.href = "/main#"+res.coil_id
+						}, 8000);
+					}else if(res.message === "Invalid Coil ID"){
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = res.message;
+
+						display_alert();
+					}else if(res.message === "login needed"){
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = "Something Went Wrong: for your own safety, we are logging you out... Login and try again.";
+
+						display_alert();
+
+						alert_cancel.addEventListener("click", ()=>{
+							window.location.href = "/login";
+						});
+
+						setTimeout(()=>{
+							window.location.href = "/login";
+						}, 8000);
+					}else{
+						alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+						alert_p.textContent = res.message;
+
+						display_alert();
+					}
+					
+				}catch(error){
+					continue_button.disabled = false
+					continue_button.textContent = "Invest";
+
+					display_alert();
+					console.log(error)
+					alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+					alert_p.textContent = error.message;
+				}
+			}
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+		const closs_form = ()=>{
+			body_overlay.style.opacity = "0";
+			body_overlay.style.display = "none";
+			form.style.zIndex = "-1";
+		}
+
+
+		
+		form_cancel.addEventListener("click", ()=>{
+			form.coil_id.required = false;
+			closs_form();
+		});
+		
+
+		alert_cancel.addEventListener("click", ()=>{
+			closs_alert();
+		});
+
+
+
+
+		body_overlay.addEventListener("click", ()=>{
+			redirect_wrapper.style.display = "none";
+			closs_form()
+			closs_alert();
+		});
+
+		window.onscroll = function() {
+			redirect_wrapper.style.display = "none";
+			closs_form()
+			closs_alert();
+		};
+
+	</script>
 
 </body>
 </html>

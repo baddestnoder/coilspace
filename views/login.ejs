@@ -34,15 +34,15 @@
 
 			<form>
 				<p class="site_logo_in_login"><span><i class="fa-solid fa-explosion"></i>Coil</span>Space</p>
-				<input required class="email" type="email" name="email" placeholder="Enter Email">
+				<input required class="email input" type="email" name="email" placeholder="Enter Email">
 				
-				<input required class="password" type="password" name="password" placeholder="Enter Password">
+				<input required class="input password" type="password" name="password" placeholder="Enter Password">
 
 				<button class="signUpButton">Login</button>
 			</form>
 
 			<p class="no_account">Not Yet Registered?</p>
-			<button onclick="window.location.href='/register'" class="loginButton">Register</button>
+			<button onclick="window.location.href='/reg/direct'" class="loginButton">Register</button>
 
 
 			<section style="display: none;" class="alert_wrapper">
@@ -68,7 +68,8 @@
 			const form = document.querySelector("form");
 			const alert_p = document.querySelector(".alert_p");
 			const alert_wrapper = document.querySelector(".alert_wrapper");
-			const submit_button = document.querySelector(".signUpButton")
+			const submit_button = document.querySelector(".signUpButton");
+			const inputs = document.querySelectorAll(".input");
 
 
 
@@ -97,6 +98,11 @@
 
 			form.addEventListener("submit", async(e)=>{
 				e.preventDefault();
+
+
+					for(i=inputs.length - 1; i >=0; i--){
+						inputs[i].blur();
+					}
 
 				if(submit_button.disabled){
 				}else{
@@ -133,22 +139,26 @@
 							alert_p.textContent = "Something went wrong: seems you are having a bad network connection.";
 
 							display_alert();
+						}else if(res.message.includes("email is not registered")){
+							alert_p.textContent = res.message;
+
+							display_alert();
 						}else{
 							alert_p.textContent = res.message+": Please refresh and try again... If this error keep occurring, kindly report this error.";
 
 							display_alert();
 						}
 					}catch(error){
+						display_alert();
+						console.log(error)
 						alert_p.textContent = error.message;
 
-						display_alert();
+						submit_button.disabled = false
+						submit_button.textContent = "Login";
+						
 					}
 				}
 			});
-
-
-
-
 
 
 

@@ -103,6 +103,10 @@
 			const alert_cancel = document.querySelector(".alert_cancel");
 			const alert_p = document.querySelector(".alert_p");
 			const alert_wrapper = document.querySelector(".alert_wrapper");
+			const inputs = document.querySelectorAll(".input");
+
+
+
 
 
 
@@ -155,6 +159,9 @@
 
 
 			form.addEventListener("submit", async(e)=>{
+				for(i=inputs.length - 1; i >=0; i--){
+					inputs[i].blur();
+				}
 				e.preventDefault();
 			});
 
@@ -213,8 +220,6 @@
 
 				if(submit_button.disabled){
 				}else{
-					submit_button.disabled = true
-					submit_button.textContent = "Loading...";
 
 					try{
 					
@@ -235,6 +240,10 @@
 						}else if(empty === true){
 							//Don't do anything if the fields are empty
 						}else{
+
+
+							submit_button.disabled = true
+							submit_button.textContent = "Loading...";
 
 							const result = await fetch("/register", {
 
@@ -270,6 +279,8 @@
 
 									password_section.style.opacity = "0";
 									password_section.style.zIndex = "1";
+								}else if(res.error.code === "OTP_NEEDED"){
+									window.location.href = "/main";
 								}else{
 
 									if(res.error.malicious === "password"){
@@ -308,10 +319,27 @@
 
 						
 					}catch(error){
-						alert_p.textContent = error.message;
-						console.log(error)
 
-						display_alert();
+						if(error.message.includes("format")){
+							display_alert();
+							alert_p.textContent = "Network Error, try again now.";
+							alert_cancel.addEventListener("click", ()=>{
+								window.location.href = window.location.href;
+							});
+
+							setTimeout(()=>{
+								window.location.href = window.location.href
+							}, 8000);
+						}else{
+							alert_p.textContent = error.message;
+							console.log(error)
+
+							display_alert();
+							submit_button.disabled = false
+							submit_button.textContent = "Sign Up";
+						}
+
+						
 					};
 				}
 			});

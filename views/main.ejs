@@ -9,6 +9,20 @@
 
 
 	<style>
+
+
+		.menu_wrapper nav .main_page{
+			background-color: rgb(0, 35, 45);
+			color: white;
+			border-radius: 4px;
+		}
+
+		.menu_wrapper nav .main_page i, .menu_wrapper nav .main_page a{
+			color: white;
+		}
+
+
+
 		footer .home a{
 		color: blue;
 		}
@@ -96,11 +110,11 @@
 				<%for(i=myInvestment.length - 1; i >= 0; i--){%>
 
 					<article id="<%=myInvestment[i].coil_id%>" onclick="window.location.href='/coil/<%=myInvestment[i].coil_id%>'">
-							<h3><div><i class="fa-solid fa-check"></i></div><div>Coil Investment <span> 11/01/2024</span></div></h3>
+							<h3><div><i class="fa-solid fa-check"></i></div><div>Coil Investment <span> <%=myInvestment[i].date%></span></div></h3>
 						<div class="invesment_detail">
 							<i class="fa-solid fa-arrow-up-right-dots"></i>
-							<h4><%=myInvestment[i].unit%> Unit</h4>
 							<p class="value"><%=currencyFormatter.format(myInvestment[i].value * myInvestment[i].unit * rate)%> <span>Current Value</span></p>
+							<h4><%=myInvestment[i].unit%> Unit</h4>
 						</div>
 					</article>
 				<%}%>
@@ -112,9 +126,20 @@
 
 		<section class="buy_method_wrapper">
 			<i class="buy_method_wrapper_cancel fa-solid fa-xmark"></i>
-			<h2>Choose Purchase Method</h2>
-			<button onclick="location.href='/generateCoil'" class="using_wallet_balance">Purchase using Wallet Balance</button>
-			<button onclick="location.href='/buy_coil'">Purchase using Bank Transfer</button>
+			<h2>Purchase Coil</h2>
+			
+
+			<article onclick="window.location.href='/buy_coil'">
+				<i class="fa-solid fa-money-bill-trend-up"></i>
+				<h3>Purchase from Agent</h3>
+				<p>For traders purchasing for investment purposes.</p>
+			</article>
+
+			<article>
+				<i class="fa-solid fa-cart-shopping"></i>
+				<h3>Purchase Wholesale</h3>
+				<p>For Coil Dealers purchasing for resale... <%=currencyFormatter.format(100*rate)%> and above.</p>
+			</article>
 		</section>
 	</main>
 

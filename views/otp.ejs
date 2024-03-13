@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<%-include("./partialTemplate/meta.ejs")%>
+
+		<link type="text/css" rel="stylesheet" href="/css/register.css">
+
+		<title>CoilSpace | OTP Verification</title>
+
+
+		<style type="text/css">
+
+			form{
+				padding: 30px 20px 50px 20px;
+				box-sizing: border-box;
+				height: 300px;
+			}	
+
+			form h1{
+				padding: 0 10px;
+				color: rgb(70, 70, 70);
+			}
+
+			form p{
+				font-size: 1.2rem;
+				padding: 5px 10px 15px 10px;
+			}
+
+			form input{
+				border: 1px solid rgb(100, 100, 100);
+			}
+
+			button{
+				background-color: transparent;
+				border: 1px solid rgb(120, 120, 120);
+				width: 50%;
+				margin: 30px 0 0 12%;
+				color: gray;
+			}
+
+
+			
+
+			form button{
+				margin: 20px auto 0 auto;
+				border: none;
+				color: white;
+				background-color: rgb(30, 130, 110);
+			}
+
+			.counter_wrapper{
+				width: 70%;
+				margin-left: 12%;
+				font-size: 1.4rem;
+				margin-top: 60px;
+			}
+
+			.counter{
+				color: blue;
+				font-weight: 800;
+			}
+
+
+			
+
+		</style>
+
+
+		
+	</head>
+
+
+
+	<body>
+
+
+
+
+		
+		<div class="body_overlay"></div>
+		<main role="main">
+
+			
+
+			<form>
+				<h1>Verification needed</h1>
+				<p>OTP as been sent to you via <span style="color: blue;">"<%=data.email%>"</span></p>
+				
+				<input required class="input password" type="text" name="otp" placeholder="Enter OTP">
+
+				<button class="signUpButton">Verify OTP</button>
+			</form>
+
+
+
+			<p class="counter_wrapper">A mail with your OTP will be set within <span class="counter">100</span> seconds</p>
+			<button class="resend_button">Resend OTP</button>
+			<button class="changeEmail_button" onclick="window.location.href = '/reg/<%=data.invited_by%>'">Change Email</button>
+
+
+
+
+			<section style="display: none;" class="alert_wrapper">
+				<i class="alert_icon fa-solid fa-circle-exclamation"></i>
+				<p class="alert_p"></p>
+				<button class="alert_cancel">Okay</button>
+			</section>
+
+		</main>
+
+
+
+
+
+
+
+
+
+		<script type="text/javascript">
+
+			const body_overlay = document.querySelector(".body_overlay");
+			const alert_cancel = document.querySelector(".alert_cancel");
+			const form = document.querySelector("form");
+			const alert_p = document.querySelector(".alert_p");
+			const alert_wrapper = document.querySelector(".alert_wrapper");
+			const submit_button = document.querySelector(".signUpButton");
+			const inputs = document.querySelector(".input");
+			const counter = document.querySelector(".counter");
+			const counter_wrapper = document.querySelector(".counter_wrapper");
+			const resend_button = document.querySelector(".resend_button");
+			const alert_icon = document.querySelector(".alert_icon");
+
+
+
+
+
+
+			
+
+
+			document.addEventListener("DOMContentLoaded", ()=>{
+				resend_button.disabled = true;
+
+				let counterNum = 10;
+
+				setInterval(()=>{
+					if(counterNum > 0){
+						counter.textContent = counterNum - 1;
+						counterNum = counterNum -1
+					}else{
+						counter_wrapper.style.display = "none";
+						resend_button.disabled = false;
+					}
+					
+				}, 1000);
+			})
+
+
+
+
+
+			const display_alert = ()=>{
+				body_overlay.style.display = "block";
+				body_overlay.style.opacity = "0.8";
+				alert_wrapper.style.display = "block";
+
+				const scrollY = window.scrollY || window.pageYOffset;
+			  	const topPosition = 100+scrollY + 'px';
+			    alert_wrapper.style.top = topPosition;
+			}
+
+
+			const closs_alert = ()=>{
+				body_overlay.style.opacity = "0";
+				body_overlay.style.display = "none";
+				alert_wrapper.style.display = "none";
+			}
+
+
+
+
+
+
+
+
+
+
+
+			resend_button.addEventListener("click", async()=>{
+
+				try{
+
+					resend_button.disabled = true
+					resend_button.textContent = "Loading...";
+					alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+
+					const result = await fetch("/resend_otp", {
+						method: "POST",
+						body: JSON.stringify({
+							hi: "hi"
+						}),
+
+						headers: {"Content-Type": "application/json"}
+					});
+
+					const res = await result.json()
+					resend_button.textContent = "Resend OTP";
+
+					if(res.message === "successful"){
+						display_alert();
+						alert_icon.className = "alert_icon fa-regular fa-circle-check";
+						alert_p.textContent = "New OTP has been generated... Check your mail inbox."
+					}else if(res.message === "login needed"){
+						display_alert();
+						alert_p.textContent = "Your email is not registered with us. Register now!";
+
+						alert_cancel.addEventListener("click", ()=>{
+							window.location.href = addEventListener
+						});
+					}
+				}catch(error){
+					console.log(error)
+				}
+			});
+
+
+
+
+
+
+
+
+
+
+
+			form.addEventListener("submit", async(e)=>{
+				e.preventDefault();
+
+				alert_icon.className = "alert_icon fa-solid fa-circle-exclamation";
+
+				try{
+					const result = await fetch("/verify_otp", {
+						method: "POST",
+						body: JSON.stringify({
+							otp: form.otp.value
+						}),
+
+						headers: {"Content-Type": "application/json"}
+					});
+
+
+					const res = await result.json()
+
+					resend_button.disabled = false;
+					resend_button.textContent = "Verify OTP";
+
+					if(res.message === "successful"){
+						window.location.href = window.location.href;
+					}else if(res.message === "Invalid or expired OTP"){
+						display_alert();
+						alert_p.textContent = res.message;
+					}else{
+
+					}
+				}catch(error){
+					console.log(error)
+				}
+			});
+
+
+		
+
+
+			
+
+
+
+			body_overlay.addEventListener("click", ()=>{
+				closs_alert();
+			});
+
+			alert_cancel.addEventListener("click", ()=>{
+				closs_alert();
+			});
+
+			window.onscroll = function() {
+				closs_alert();
+			};
+
+
+
+
+		</script>
+
+
+	</body>
+</html>
