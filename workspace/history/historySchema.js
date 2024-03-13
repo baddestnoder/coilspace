@@ -33,6 +33,11 @@ const thisSchema = new mongoose.Schema({
 		type: String
 	},
 
+	coil_id: {
+		required: false,
+		type: String
+	},
+
 
 	name: {
 		required: false,

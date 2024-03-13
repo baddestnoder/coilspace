@@ -15,10 +15,9 @@ const router = express.Router();
 
 
 router.get("/login", async(req, res)=>{
+	res.cookie("signature", "", {httpOnly: true, maxAge: 0, expiresIn: 0});
 	res.render("login.ejs");
 });
-
-
 
 
 
@@ -61,10 +60,16 @@ router.post("/login", async(req, res)=>{
 			const password = incomomgData.password;
 
 
+
 			const login_response = await AccountDB.login(email, password);
 
 			if(login_response === "Verification Failed"){
-				res.status(401).json({message: "blocked"});
+				const foundAccount = await AccountDB.findOne({email});
+				if(foundAccount){
+					res.status(401).json({message: "blocked"});
+				}else{
+					res.status(401).json({message: "This email is not registered with us... If you do not have an account yet, click Register"});
+				}
 			}else if(login_response._id){
 				const signature = jwt.sign({id: login_response._id}, process.env.SECRET, {expiresIn: 60 * 60 * 24});
 				res.cookie("signature", signature, {httpOnly: true, maxAge: 1000 * 60 * 60 * 24});
@@ -80,7 +85,6 @@ router.post("/login", async(req, res)=>{
 		const error_second = (Date.now - startTime) / 1000;
 		customMiddleware.catchError(error, res, error_second);
 	}
-
 
 });
 

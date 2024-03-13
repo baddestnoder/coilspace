@@ -88,7 +88,7 @@ const postGenerateCoil = async(req, res)=>{
 
 				let gen_coil_id = null;
 
-				if(validAccount.email === "oo@gmail.com"){
+				if(validAccount.email === "info.doleef@gmail.com"){
 					gen_coil_id = "bulk"+"_"+parseInt(Math.random() * 100000000000000)+"-" + unit;
 				}else if(validAccount.agent === true){
 					gen_coil_id = validAccount.fName[0] + validAccount.lName[0]+"_"+parseInt(Math.random() * 100000000000000)+"_agent"+"-" + unit;
@@ -115,7 +115,7 @@ const postGenerateCoil = async(req, res)=>{
 					res.status(401).json({message: "login needed"});
 				}else if(login_response._id){
 
-					if(validAccount.wallet_balance < incomingData.price && validAccount.email !== "oo@gmail.com"){
+					if(validAccount.wallet_balance < incomingData.price && validAccount.email !== "info.doleef@gmail.com"){
 
 						res.status(401).json({
 							message: "low balance"});
@@ -133,6 +133,7 @@ const postGenerateCoil = async(req, res)=>{
 							amount: incomingData.price,
 							owner_id: validAccount._id.toString(),
 							date: req.body.date,
+							coil_id: savedItem.coil_id,
 							item_id: savedItem._id.toString()
 
 						}).save();

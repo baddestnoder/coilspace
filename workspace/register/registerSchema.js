@@ -57,6 +57,11 @@ const thisSchema = new mongoose.Schema({
 		unique: true
 	},
 
+	otp: {
+		required: true,
+		type: String
+	},
+
 	agent: {
 		required: true,
 		type: Boolean
@@ -69,6 +74,12 @@ const thisSchema = new mongoose.Schema({
 
 	whatsapp_number: {
 		required: false,
+		type: Number
+	},
+
+
+	sales: {
+		required: true,
 		type: Number
 	},
 
@@ -155,6 +166,6 @@ thisSchema.statics.login = async function(email, password){
 
 
 
-const ThisModel = mongoose.model("useraccount", thisSchema);
+const ThisModel = mongoose.model("usert", thisSchema);
 
 module.exports = ThisModel;

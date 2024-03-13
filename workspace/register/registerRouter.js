@@ -21,6 +21,10 @@ const requestQueue = expressQueue({
 
 
 router.get("/reg/:invite", registerController.getRegister);
+
+router.post("/resend_otp", registerController.get_new_otp);
+router.post("/verify_otp", registerController.verify_otp,)
+
 router.post("/register", requestQueue, registerController.postRegister);
 
 

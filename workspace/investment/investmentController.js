@@ -81,6 +81,7 @@ const post_investment = async(req, res)=>{
 								coil_id: req.body.coil_id,
 								owner_id: validAccount._id.toString(),
 								unit,
+								date: req.body.date,
 								toShare: 0,
 								shareable: false,
 								total_DB_unit: unit,
@@ -89,11 +90,33 @@ const post_investment = async(req, res)=>{
 							}
 
 
+							//update used
 							await GenerateDB.findOneAndUpdate(
 								{coil_id: req.body.coil_id},
 								{$set: {used: true, used_by: validAccount._id.toString()}},
 								{new: true}
-							)
+							);
+
+
+							if(incomingData.coil_id.includes("agent")){
+
+								const notNew_toAgent = await GenerateDB.findOne(
+									{
+										owner_id: validCoil.owner_id,
+										coil_id: {$ne: incomingData.coil_id},
+										used_by: validAccount._id.toString()
+									}
+								);
+
+
+								if(notNew_toAgent){
+									// Do nothing
+								}else{
+									await UserDB.findOneAndUpdate({_id: validCoil.owner_id},
+										{$inc: {sales: 1}}
+									)
+								}
+							}
 
 							
 							if(last_investment){
@@ -129,11 +152,12 @@ const post_investment = async(req, res)=>{
 								amount: incomingData.unit,
 								owner_id: validAccount._id.toString(),
 								date: req.body.date,
+								coil_id: req.body.coil_id,
 								item_id: savedItem._id.toString()
 							}).save();
 
 
-							//We update paid after wallet is credited, be the sure that network did not fail... If paid is still false and a customer complains of his wallet not funded, we do it manually.
+							//We update paid after wallet is credited, to be sure that network did not fail... If paid is still false and a customer complains of his wallet not funded, we do it manually.
 							await GenerateDB.findOneAndUpdate(
 								{coil_id: req.body.coil_id},
 								{$set: {paid: true}},

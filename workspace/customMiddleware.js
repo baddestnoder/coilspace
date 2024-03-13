@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const AccountDB = require("./register/registerSchema.js");
 const RateDB = require("./director/rateSchema.js");
+const nodemailer = require("nodemailer");
 
 
 
@@ -27,6 +28,38 @@ const getCookie = async(req, res)=>{
 };
 
 
+
+
+
+
+const otp = async(email, otp)=>{
+	let transporter = nodemailer.createTransport({
+	    service: 'Gmail',
+	    auth: {
+	      user: 'info.doleef@gmail.com',
+	      pass: 'ejkm vrdp jpoc xivm'
+	    }
+	});
+
+
+	let mailOptions = {
+	    from: 'info.doleef@gmail.com',
+	    to: email,
+	    subject: "Verification From CoilSpace",
+	    text: `${otp} is your verification code, copy the code and use for verification.`
+	};
+
+	await transporter.sendMail(mailOptions);
+}
+
+
+
+
+
+
+
+
+	
 
 
 
@@ -187,6 +220,7 @@ const get_date = ()=>{
 
 
 module.exports = {
+	otp,
 	sanitized,
 	logger,
 	getCookie,

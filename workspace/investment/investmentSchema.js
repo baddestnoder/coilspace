@@ -50,7 +50,13 @@ const thisSchema = new mongoose.Schema({
 	totalInvestment: {
 		required: true,
 		type: Number
+	},
+
+	date: {
+		required: true,
+		type: String
 	}
+
 });
 
 
