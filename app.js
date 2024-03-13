@@ -26,6 +26,36 @@ const agent = require("./workspace/agent.js");
 const history = require("./workspace/history/historyRouter.js");
 const refer = require("./workspace//refer.js");
 const agentPage = require("./workspace/agentPage.js");
+const customMiddleware = require("./workspace/customMiddleware.js");
+
+
+
+
+
+
+
+
+
+
+const otp_needed = async(req, res, next) => {
+	if(req.method == "GET"){
+		const foundAccount = await customMiddleware.getCookie(req, res);
+		if(foundAccount && foundAccount.otp !== "none"){
+			if(req.originalUrl == "/login" || req.originalUrl.includes("/reg/") || req.originalUrl == "/learn" || req.originalUrl == "/" || req.originalUrl == "/landing" || req.originalUrl == "/policy" || req.originalUrl == "/term"){
+
+			}else{
+
+				foundAccount.password = "";
+				if(!foundAccount.invited_by){
+					foundAccount.invited_by = "direct"
+				}
+				return res.render('otp.ejs', {data: foundAccount});
+			}
+			
+		}
+	}
+  next();
+};
 
 
 
@@ -44,6 +74,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(compression());
 
 
+
+app.use(otp_needed)
 app.use(landing);
 app.use(register);
 app.use(login);
@@ -69,6 +101,7 @@ app.use(agentPage);
 
 
 const port = process.env.PORT || 9000;
+const HOST = "0.0.0.0";
 
 mongoose.connect("mongodb+srv://doleefUser:BASSEYER@doleefcluster.brp5c.mongodb.net/Doleef_database", 
 	{
@@ -76,7 +109,7 @@ mongoose.connect("mongodb+srv://doleefUser:BASSEYER@doleefcluster.brp5c.mongodb.
 		useUnifiedTopology: true
 	}
 ).then((result)=>{
-	app.listen(port, ()=>{
+	app.listen(port, HOST, ()=>{
 		if(port === 9000){
 			console.log("Listening");
 		}
