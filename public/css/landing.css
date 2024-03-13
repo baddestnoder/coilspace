@@ -1,51 +1,99 @@
 @media screen and (min-width: 200px){
 
+
+	header{
+		border-bottom: 1px solid rgb(200, 200, 200);
+	}
+
+
+
+	.menu_wrapper .menu_head{
+				padding-top: 10px;
+	}
+
+	.menu_wrapper .profile_name{
+		padding: 0 8px 5px 0;
+		text-align: left;
+		display: inline-block;
+		margin: 5px 0 0 20px;
+		border-bottom: 1px solid rgb(100, 100, 100);
+	}
+
+	.menu_wrapper nav .main_page{
+		background-color: rgb(0, 35, 45);
+		color: white;
+		border-radius: 4px;
+	}
+
+	.menu_wrapper nav .main_page i, .menu_wrapper nav .main_page a{
+		color: white;
+	}
+
+
+
 	main{
 		padding: 1px 0 40px 0;
-		background-color: rgb(240, 240, 240);
+		background-color: white;
 	}
 
 
-	section{
-		background-color: white;
-		padding: 30px 15px;
+	article{
+		border: 1px solid rgb(190, 190, 190);
+		padding: 40px 15px 30px 15px;
 		box-sizing: border-box;
 		border-radius: 15px;
-		width: 80%;
+		width: 90%;
 		margin: auto;
 		margin-top: 50px;
-		box-shadow: rgb(150, 200, 170) 0px 0px 20px 0px;
 	}
 
-	section >*{
-		text-align: center;
-	}
+	
 
-	section > i{
-		color: rgb(0, 120, 0);
-		font-size: 4rem;
-		text-align: center;
+	article > i{
+		font-size: 1.8rem;
 		display: block;
 		width: 100%;
 	}
 
-	section h1{
-		font-family: 'Montserrat', sans-serif;
-		margin: 10px 0;
-		font-size: 2rem;
-		color: rgb(0, 80, 0);
+
+	article > i::before{
+		border-radius: 50%;
+		padding: 15px 20px;
+		background-color: rgb(200, 70, 0);
+		color: rgb(255, 230, 230);
 	}
 
-	section p{
-		text-align: center;
+
+	main article+article > i::before{
+		padding: 15px 14px;
+		background-color: rgb(0, 130, 70);
+		color: rgb(210, 255, 230);
+	}
+
+
+
+	main article+article+article > i::before{
+		padding: 15px 17px;
+		background-color: rgb(130, 0, 130);
+		color: rgb(255, 220, 255);
+	}
+
+	article h2{
+		font-family: 'Montserrat', sans-serif;
+		margin: 30px 0 5px 0;
+		font-size: 1.7rem;
+		color: rgb(50, 50, 50);
+	}
+
+	article p{
 		font-family: 'Varela Round', sans-serif;
-		line-height: 1.8;
-		color: black;
+		line-height: 1.6;
+		color: rgb(80, 80, 80);
 		font-size: 1.2rem;
 		font-weight: 400;
 	}
 
-	section a{
+	article a{
 		margin: 20px 10px 5px auto;
 		display: block;
 		width: 85px;
@@ -58,18 +106,19 @@
 	}
 
 
-	.big_start{
-		width: 85%;
+	main .big_start{
+		padding: 15px 5px;
+		width: 70%;
+		font-weight: 400;
 		display: block;
-		margin: 60px auto 0 auto;
-		padding: 10px 5px;
+		margin: 40px auto 0 auto;
 		box-sizing: border-box;
-		border-radius: 3px;
+		border-radius: 8px;
+		border: none;
 		color: white;
-		background-color: rgb(25, 105, 45);
+		background-color: rgb(0, 130, 70);
 		text-align: center;
 		font-size: 1.3rem;
-		box-shadow: rgb(200, 200, 200) 1px 1px 20px 1px;
 	}
 
 
